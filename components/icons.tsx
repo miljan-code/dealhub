@@ -12,6 +12,7 @@ import {
   SunMedium,
   ThumbsUp,
   Twitter,
+  Loader2,
   type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -30,6 +31,7 @@ export const Icons = {
   bell: Bell,
   star: Star,
   logout: LogOut,
+  loader: Loader2,
   logo: (props: LucideProps) => (
     <svg
       version="1.1"

@@ -11,6 +11,7 @@ import { Header } from '@/components/header';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   title: {
@@ -59,6 +60,7 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
             <ThemeToggle />
           </div>
           <TailwindIndicator />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

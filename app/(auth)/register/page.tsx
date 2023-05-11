@@ -1,9 +1,7 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardDescription, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { UserAuthSocials } from '@/components/user-auth-socials';
 import Link from 'next/link';
+import { Card, CardDescription, CardTitle } from '@/components/ui/card';
+import { UserAuthSocials } from '@/components/user-auth-socials';
+import { UserRegisterForm } from '@/components/user-register-form';
 
 const RegisterPage = () => {
   return (
@@ -19,27 +17,7 @@ const RegisterPage = () => {
             or
           </div>
         </div>
-        <form className="flex flex-col space-y-3 pb-6">
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="username" className="text-xs">
-              Username
-            </Label>
-            <Input type="text" id="username" placeholder="John Smith" />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="email" className="text-xs">
-              Email address
-            </Label>
-            <Input type="email" id="email" placeholder="example@mail.com" />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="password" className="text-xs">
-              Password
-            </Label>
-            <Input type="password" id="password" />
-          </div>
-          <Button type="submit">Continue</Button>
-        </form>
+        <UserRegisterForm />
         <p className="text-xs">
           Already have an account?{' '}
           <Link href="/login" className="font-medium text-indigo-500">

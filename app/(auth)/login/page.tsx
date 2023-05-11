@@ -1,8 +1,6 @@
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { UserLoginForm } from '@/components/user-login-form';
 import { UserAuthSocials } from '@/components/user-auth-socials';
 
 const LoginPage = () => {
@@ -19,21 +17,7 @@ const LoginPage = () => {
             or
           </div>
         </div>
-        <form className="flex flex-col space-y-3 pb-6">
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="email" className="text-xs">
-              Email address
-            </Label>
-            <Input type="email" id="email" placeholder="example@mail.com" />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="password" className="text-xs">
-              Password
-            </Label>
-            <Input type="password" id="password" />
-          </div>
-          <Button type="submit">Continue</Button>
-        </form>
+        <UserLoginForm />
         <p className="text-xs">
           Don&apos;t have an account?{' '}
           <Link href="/register" className="font-medium text-indigo-500">

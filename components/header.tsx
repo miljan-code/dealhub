@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import { siteConfig } from '@/config/site';
+import { buttonVariants } from '@/components/ui/button';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Icons } from '@/components/icons';
+import { cn } from '@/lib/utils';
 
 export const Header = () => {
   return (
-    <header className="bg-background sticky top-0 z-40 w-full border-b">
+    <header className="sticky top-0 z-40 w-full border-b bg-background">
       <div className="mx-auto flex h-16 max-w-5xl items-center gap-12 px-2 sm:justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <Icons.logo className="h-6 w-6" />
@@ -19,10 +21,10 @@ export const Header = () => {
           </Button>
         </div>
         <div className="flex items-center justify-end space-x-4">
-          <Button className="space-x-1">
+          <Link href="/create" className={cn(buttonVariants(), 'space-x-1')}>
             <Icons.plus />
             <span>Sell something</span>
-          </Button>
+          </Link>
         </div>
       </div>
     </header>

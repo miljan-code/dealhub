@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const RegisterPage = () => {
   return (
     <Card className="flex w-full max-w-sm flex-col px-8 py-10">
-      <CardTitle className="pb-1">Sign up</CardTitle>
+      <CardTitle className="pb-1">Create an account</CardTitle>
       <CardDescription className="pb-8">To continue to DealHub</CardDescription>
       <UserAuthSocials />
       <div className="relative mb-8 h-[1px] w-full bg-border">

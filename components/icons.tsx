@@ -22,6 +22,7 @@ import {
   Shirt,
   Baby,
   Gamepad2,
+  Eye,
   type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -50,6 +51,7 @@ export const Icons = {
   shirt: Shirt,
   baby: Baby,
   gamepad: Gamepad2,
+  eye: Eye,
   logo: (props: LucideProps) => (
     <svg
       version="1.1"

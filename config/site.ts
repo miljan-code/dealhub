@@ -35,47 +35,47 @@ export const siteConfig = {
   // prettier-ignore
   categories: [
     {
-      href: '/category/collectibles',
+      href: '?category=collectibles',
       label: 'Collectibles',
       icon: Icons.layout,
     },
     { 
-      href: '/category/electronics',
+      href: '?category=electronics',
       label: 'Electronics',
       icon: Icons.laptop 
     },
     { 
-      href: '/category/fashion',
+      href: '?category=fashion',
       label: 'Fashion',
       icon: Icons.shirt
     },
     { 
-      href: '/category/home-and-garden',
+      href: '?category=home-and-garden',
       label: 'Home',
       icon: Icons.home
     },
     { 
-      href: '/category/cars',
+      href: '?category=cars',
       label: 'Cars',
       icon: Icons.car
     },
     { 
-      href: '/category/music',
+      href: '?category=music',
       label: 'Music',
       icon: Icons.music
     },
     { 
-      href: '/category/sports',
+      href: '?category=sports',
       label: 'Sports',
       icon: Icons.bike
     },
     { 
-      href: '/category/toys',
+      href: '?category=toys',
       label: 'Toys',
       icon: Icons.baby
     },
     { 
-      href: '/category/gaming',
+      href: '?category=gaming',
       label: 'Gaming',
       icon: Icons.gamepad
     },

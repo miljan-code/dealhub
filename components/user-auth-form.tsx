@@ -7,15 +7,21 @@ import * as z from 'zod';
 import { signIn } from 'next-auth/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@/components/ui/use-toast';
-import { userRegisterSchema } from '@/lib/validations/auth';
+import { userRegisterSchema, userLoginSchema } from '@/lib/validations/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Icons } from './icons';
 
-type FormData = z.infer<typeof userRegisterSchema>;
+type RegisterSchema = z.infer<typeof userRegisterSchema>;
+type LoginSchema = z.infer<typeof userLoginSchema>;
+type FormData = RegisterSchema & LoginSchema;
 
-export const UserRegisterForm = () => {
+interface UserAuthFormProps {
+  authType: 'login' | 'register';
+}
+
+export const UserAuthForm = ({ authType }: UserAuthFormProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,35 +30,39 @@ export const UserRegisterForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(userRegisterSchema),
+    resolver: zodResolver(
+      authType === 'login' ? userLoginSchema : userRegisterSchema
+    ),
   });
 
   const onSubmit = async (formData: FormData) => {
     setIsLoading(true);
 
-    const response = await fetch('/api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
+    if (authType === 'register') {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    if (!response.ok) {
-      setIsLoading(false);
-      if (response.status === 409) {
+      if (!response.ok) {
+        setIsLoading(false);
+        if (response.status === 409) {
+          return toast({
+            title: 'Email address already in use',
+            description: 'Please enter another address or try to login',
+            variant: 'destructive',
+          });
+        }
+
         return toast({
-          title: 'Email address already in use',
-          description: 'Please enter another address or try to login',
+          title: 'Something went wrong.',
+          description: 'Your account was not created. Please, try again.',
           variant: 'destructive',
         });
       }
-
-      return toast({
-        title: 'Something went wrong.',
-        description: 'Your account was not created. Please, try again.',
-        variant: 'destructive',
-      });
     }
 
     signIn('credentials', {
@@ -71,7 +81,7 @@ export const UserRegisterForm = () => {
         router.refresh();
         router.push('/');
         toast({
-          title: 'Your account is successfuly created',
+          title: 'You are successfuly logged in!',
         });
       }
     });
@@ -82,20 +92,24 @@ export const UserRegisterForm = () => {
       className="flex flex-col space-y-3 pb-6"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="username" className="text-xs">
-          Username
-        </Label>
-        <Input
-          type="text"
-          id="username"
-          placeholder="John Smith"
-          {...register('username')}
-        />
-        {errors?.username && (
-          <p className="px-1 text-xs text-red-600">{errors.username.message}</p>
-        )}
-      </div>
+      {authType === 'register' && (
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="username" className="text-xs">
+            Username
+          </Label>
+          <Input
+            type="text"
+            id="username"
+            placeholder="John Smith"
+            {...register('username')}
+          />
+          {errors?.username && (
+            <p className="px-1 text-xs text-red-600">
+              {errors.username.message}
+            </p>
+          )}
+        </div>
+      )}
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="email" className="text-xs">
           Email address

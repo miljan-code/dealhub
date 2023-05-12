@@ -13,6 +13,15 @@ import {
   ThumbsUp,
   Twitter,
   Loader2,
+  LayoutGrid,
+  Bike,
+  Music,
+  Home,
+  Car,
+  Laptop,
+  Shirt,
+  Baby,
+  Gamepad2,
   type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -32,6 +41,15 @@ export const Icons = {
   star: Star,
   logout: LogOut,
   loader: Loader2,
+  layout: LayoutGrid,
+  bike: Bike,
+  music: Music,
+  home: Home,
+  car: Car,
+  laptop: Laptop,
+  shirt: Shirt,
+  baby: Baby,
+  gamepad: Gamepad2,
   logo: (props: LucideProps) => (
     <svg
       version="1.1"

@@ -3,10 +3,7 @@ import { Metadata } from 'next';
 
 import { siteConfig } from '@/config/site';
 import { fontSans } from '@/lib/fonts';
-import { getSession } from '@/lib/session';
 import { cn } from '@/lib/utils';
-import { CategoriesAside } from '@/components/categories-aside';
-import { Sidebar } from '@/components/sidebar';
 import { Header } from '@/components/header';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -15,8 +12,8 @@ import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   title: {
-    default: 'DealHub — Find anything you need',
-    template: `%s - ${siteConfig.name}`,
+    default: 'Find anything you need — DealHub',
+    template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.description,
   themeColor: [
@@ -34,9 +31,7 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-const RootLayout = async ({ children }: RootLayoutProps) => {
-  const session = await getSession();
-
+const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -48,13 +43,7 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="relative min-h-screen">
             <Header />
-            <main className="mx-auto flex max-w-5xl gap-6 px-2 pb-8 pt-6">
-              <aside className="flex w-44 flex-col space-y-4">
-                <Sidebar session={session} />
-                <CategoriesAside />
-              </aside>
-              <div className="flex-1">{children}</div>
-            </main>
+            {children}
           </div>
           <div className="absolute bottom-5 right-5">
             <ThemeToggle />

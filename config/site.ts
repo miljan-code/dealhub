@@ -38,46 +38,56 @@ export const siteConfig = {
       href: '?category=collectibles',
       label: 'Collectibles',
       icon: Icons.layout,
+      value: 'collectibles'
     },
     { 
       href: '?category=electronics',
       label: 'Electronics',
-      icon: Icons.laptop 
+      icon: Icons.laptop,
+      value: 'electronics' 
     },
     { 
       href: '?category=fashion',
       label: 'Fashion',
-      icon: Icons.shirt
+      icon: Icons.shirt,
+      value: 'fashion'
     },
     { 
       href: '?category=home-and-garden',
       label: 'Home',
-      icon: Icons.home
+      icon: Icons.home,
+      value: 'home'
     },
     { 
       href: '?category=cars',
       label: 'Cars',
-      icon: Icons.car
+      icon: Icons.car,
+      value: 'cars'
     },
     { 
       href: '?category=music',
       label: 'Music',
-      icon: Icons.music
+      icon: Icons.music,
+      value: 'music'
     },
     { 
       href: '?category=sports',
       label: 'Sports',
-      icon: Icons.bike
+      icon: Icons.bike,
+      value: 'sports'
     },
     { 
       href: '?category=toys',
       label: 'Toys',
-      icon: Icons.baby
+      icon: Icons.baby,
+      value: 'toys'
     },
     { 
       href: '?category=gaming',
       label: 'Gaming',
-      icon: Icons.gamepad
+      icon: Icons.gamepad,
+      value: 'gaming'
     },
   ],
+  maxImagesUpload: 5,
 };

@@ -45,7 +45,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
             <Header />
             {children}
           </div>
-          <div className="absolute bottom-5 right-5">
+          <div className="fixed bottom-5 right-5">
             <ThemeToggle />
           </div>
           <TailwindIndicator />

@@ -4,7 +4,6 @@ import { UserAuthSocials } from '@/components/user-auth-socials';
 import { UserAuthForm } from '@/components/user-auth-form';
 import type { Metadata } from 'next';
 
-// FIXME: metadata not updating
 export const metadata: Metadata = {
   title: 'Login',
   description: 'Login to your account',

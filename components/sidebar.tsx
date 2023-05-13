@@ -32,7 +32,7 @@ export const Sidebar = ({ session }: SidebarProps) => {
               href="/login"
               className={cn(
                 buttonVariants({ variant: 'outline', size: 'sm' }),
-                'space-x-1'
+                'space-x-2'
               )}
             >
               <Icons.login size={16} />
@@ -61,7 +61,7 @@ export const Sidebar = ({ session }: SidebarProps) => {
           <Button
             variant="ghost"
             size="xs"
-            className="justify-start space-x-1 text-xs"
+            className="justify-start space-x-2 text-xs"
             onClick={() => signOut()}
           >
             <Icons.logout size={14} />

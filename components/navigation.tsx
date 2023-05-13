@@ -16,7 +16,7 @@ export const Navigation = ({ items }: NavigationProps) => {
           href={item.href}
           className={cn(
             buttonVariants({ variant: 'ghost', size: 'xs' }),
-            'justify-start space-x-1 text-xs'
+            'justify-start space-x-2 text-xs'
           )}
         >
           <item.icon size={14} />

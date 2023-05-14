@@ -25,6 +25,13 @@ import {
   Eye,
   Camera,
   X,
+  Share2,
+  User,
+  Globe2,
+  ThumbsUpIcon,
+  ThumbsDownIcon,
+  MenuSquare,
+  Phone,
   type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -56,6 +63,13 @@ export const Icons = {
   eye: Eye,
   camera: Camera,
   close: X,
+  share: Share2,
+  user: User,
+  globe: Globe2,
+  thumbUp: ThumbsUpIcon,
+  thumbDown: ThumbsDownIcon,
+  list: MenuSquare,
+  phone: Phone,
   logo: (props: LucideProps) => (
     <svg
       version="1.1"

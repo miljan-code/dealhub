@@ -3,6 +3,7 @@
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
 import { createListingSchema } from '@/lib/validations/create-listing';
 import { siteConfig } from '@/config/site';
 import { ImageUpload } from '@/components/image-upload';
@@ -19,9 +20,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Icons } from '@/components/icons';
 import type { User } from 'next-auth';
-import Image from 'next/image';
-import { Icons } from './icons';
 
 export type FormData = z.infer<typeof createListingSchema>;
 
@@ -38,31 +38,35 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
     setValue,
     formState: { errors },
     watch,
-    clearErrors,
   } = useForm<FormData>({
+    mode: 'onTouched',
     resolver: zodResolver(createListingSchema),
   });
 
   const imagesArray = watch('images');
 
-  const handleImageUpload = (value: string) => {
-    if (imagesArray?.length > siteConfig.maxImagesUpload - 1) return;
+  const setCustomValue = <K extends keyof FormData>(
+    field: keyof FormData,
+    value: FormData[K]
+  ) => {
+    setValue(field, value, {
+      shouldValidate: true,
+      shouldTouch: true,
+      shouldDirty: true,
+    });
+  };
 
+  const handleImageUpload = (value: string) => {
     if (imagesArray?.length > 0) {
-      setValue('images', [...imagesArray, value]);
+      setCustomValue('images', [...imagesArray, value]);
     } else {
-      setValue('images', [value]);
+      setCustomValue('images', [value]);
     }
   };
 
   const handleDeleteImage = (image: string) => {
     const filteredArr = imagesArray.filter(item => item !== image);
     setValue('images', filteredArr);
-  };
-
-  const setValueAndClearErrors = (field: keyof FormData, value: string) => {
-    setValue(field, value);
-    clearErrors(field);
   };
 
   const onSubmit = (formData: FormData) => {
@@ -122,9 +126,7 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
       {/* Category */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm">Category</label>
-        <Select
-          onValueChange={value => setValueAndClearErrors('category', value)}
-        >
+        <Select onValueChange={value => setCustomValue('category', value)}>
           <SelectTrigger className="w-1/4">
             <SelectValue placeholder="Choose one" />
           </SelectTrigger>
@@ -199,7 +201,7 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
       <div className="flex flex-col space-y-2">
         <label className="text-sm">Condition</label>
         <RadioGroup
-          onValueChange={value => setValueAndClearErrors('condition', value)}
+          onValueChange={value => setCustomValue('condition', value)}
           className="flex items-center space-x-2"
         >
           <div className="flex items-center space-x-2">

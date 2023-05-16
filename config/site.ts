@@ -24,7 +24,7 @@ export const siteConfig = {
     {
       title: 'Ratings',
       href: '/ratings',
-      icon: Icons.thumbsUp,
+      icon: Icons.thumbUp,
     },
     {
       title: 'Favorites',

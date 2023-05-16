@@ -10,7 +10,6 @@ import {
   Search,
   Star,
   SunMedium,
-  ThumbsUp,
   Twitter,
   Loader2,
   LayoutGrid,
@@ -32,6 +31,9 @@ import {
   ThumbsDownIcon,
   MenuSquare,
   Phone,
+  ChevronLeft,
+  ChevronRight,
+  CheckCheck,
   type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -44,7 +46,6 @@ export const Icons = {
   search: Search,
   plus: Plus,
   login: LogIn,
-  thumbsUp: ThumbsUp,
   folder: Folder,
   message: MessageCircle,
   bell: Bell,
@@ -70,6 +71,9 @@ export const Icons = {
   thumbDown: ThumbsDownIcon,
   list: MenuSquare,
   phone: Phone,
+  left: ChevronLeft,
+  right: ChevronRight,
+  checkmark: CheckCheck,
   logo: (props: LucideProps) => (
     <svg
       version="1.1"

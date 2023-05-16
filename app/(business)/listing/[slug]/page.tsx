@@ -1,9 +1,19 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import { Icons } from '@/components/icons';
+import { ListingImages } from '@/components/listing-images';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import Image from 'next/image';
-import Link from 'next/link';
+import { Rating } from '@/components/rating';
+
+const DUMMY_PICS = [
+  '/images/iphone.jpg',
+  '/images/jacket.jpg',
+  '/images/iphone.jpg',
+  '/images/jacket.jpg',
+  '/images/iphone.jpg',
+];
 
 const ListingPage = () => {
   return (
@@ -112,6 +122,23 @@ const ListingPage = () => {
         {/* Listing description */}
         <div className="p-4">
           <p className="text-sm">Description</p>
+        </div>
+      </Card>
+
+      {/* Images container */}
+      <ListingImages images={DUMMY_PICS} />
+
+      {/* Ratings */}
+      <Card className="overflow-hidden">
+        <div className="border-b border-border px-3 py-2">
+          <p className="text-xs">Newest ratings for Foo Bar</p>
+        </div>
+        <div className="flex flex-col">
+          <Rating />
+          <div className="w-full h-[1px] bg-border" />
+          <Rating />
+          <div className="w-full h-[1px] bg-border" />
+          <Rating />
         </div>
       </Card>
     </section>

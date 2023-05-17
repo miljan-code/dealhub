@@ -1,6 +1,8 @@
 'use client';
 
 import * as z from 'zod';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
@@ -20,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { toast } from '@/components/ui/use-toast';
 import { Icons } from '@/components/icons';
 import type { User } from 'next-auth';
 
@@ -32,6 +35,10 @@ interface CreateListingFormProps {
 export const CreateListingForm: React.FC<CreateListingFormProps> = ({
   currentUser,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -69,8 +76,33 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
     setValue('images', filteredArr);
   };
 
-  const onSubmit = (formData: FormData) => {
-    console.log(formData);
+  const onSubmit = async (formData: FormData) => {
+    setIsLoading(true);
+
+    try {
+      await fetch('/api/listing', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      toast({
+        title: 'Listing successfuly created!',
+        description: 'Redirecting to my listings page...',
+      });
+
+      router.push('/');
+    } catch (error) {
+      toast({
+        title: 'Something went wrong',
+        description: 'Please, try again.',
+        variant: 'destructive',
+      });
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -309,10 +341,12 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
             type="text"
             id="phone"
             className="placeholder:text-foreground/50"
-            {...register('phone')}
+            {...register('phoneNumber')}
           />
-          {errors?.phone?.message && (
-            <p className="px-1 text-xs text-red-600">{errors.phone.message}</p>
+          {errors?.phoneNumber?.message && (
+            <p className="px-1 text-xs text-red-600">
+              {errors.phoneNumber.message}
+            </p>
           )}
         </div>
       </div>

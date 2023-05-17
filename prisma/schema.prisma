@@ -64,6 +64,40 @@ model User {
 
   accounts Account[]
   sessions Session[]
+  listings Listing[]
 
   @@map(name: "users")
+}
+
+model Listing {
+  id           Int      @id @default(autoincrement())
+  title        String   @db.VarChar(255)
+  category     String   @db.VarChar(32)
+  price        Float
+  isFixedPrice Boolean  @map(name: "fixed_price")
+  isTradeable  Boolean  @map(name: "is_tradeable")
+  condition    String   @db.VarChar(32)
+  description  String?  @db.VarChar(1000)
+  createdAt    DateTime @default(now())
+  authorId     String   @db.VarChar(255)
+  username     String   @db.VarChar(32)
+  location     String   @db.VarChar(32)
+  phoneNumber  String   @map(name: "phone_number") @db.VarChar(32)
+  views        Int      @default(0)
+  stars        Int      @default(0)
+
+  images ListingImage[]
+  user   User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([authorId])
+}
+
+model ListingImage {
+  id        Int    @id @default(autoincrement())
+  imageUrl  String @db.VarChar(255)
+  listingId Int
+
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([listingId])
 }

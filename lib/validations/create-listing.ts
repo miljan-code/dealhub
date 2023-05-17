@@ -25,14 +25,20 @@ export const createListingSchema = z.object({
     required_error: 'Product condition is required',
   }),
   description: z.string().optional(),
-  location: z.string().min(1, {
-    message: 'Location is required',
-  }),
+  location: z
+    .string()
+    .min(1, {
+      message: 'Location is required',
+    })
+    .max(32, { message: 'Location must be maximum 32 characters long' }),
   username: z
     .string()
     .min(3, { message: 'Username must be at least 3 characters long' })
     .max(32, { message: 'Username must be maximum 32 characters long' }),
-  phone: z.string().min(1, {
-    message: 'Phone number is required',
-  }),
+  phoneNumber: z
+    .string()
+    .min(1, {
+      message: 'Phone number is required',
+    })
+    .max(32, { message: 'Phone number must be maximum 32 characters long' }),
 });

@@ -1,10 +1,11 @@
-import { ListingCard } from '@/components/listing-card';
 import db from '@/lib/db';
+import { ListingCard } from '@/components/listing-card';
 
 const getListings = async () => {
   const listings = await db.listing.findMany({
     include: {
       images: true,
+      favorites: true,
     },
   });
 
@@ -21,6 +22,7 @@ const IndexPage = async () => {
   return (
     <section className="flex flex-col space-y-3">
       {listings.map(item => (
+        // @ts-expect-error
         <ListingCard key={item.id} {...item} />
       ))}
     </section>

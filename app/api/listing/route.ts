@@ -1,20 +1,10 @@
 import db from '@/lib/db';
 import { FormData } from '@/components/create-listing-form';
-import { getSession } from '@/lib/session';
+import { getCurrentUser } from '@/lib/session';
 import slugify from 'slugify';
 
 export async function POST(req: Request) {
-  const session = await getSession();
-
-  if (!session?.user?.email) {
-    return new Error('You need to be logged in first!');
-  }
-
-  const currentUser = await db.user.findUnique({
-    where: {
-      email: session.user.email,
-    },
-  });
+  const currentUser = await getCurrentUser();
 
   if (!currentUser) {
     return new Error('You need to be logged in first!');

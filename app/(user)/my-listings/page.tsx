@@ -16,6 +16,7 @@ const MyListingsPage = async () => {
   if (currentUser.listings.length < 1) {
     return (
       <EmptyState>
+        <Icons.folder size={96} />
         <EmptyState.Heading className="mb-1">
           You don&apos;t have any listings
         </EmptyState.Heading>
@@ -37,7 +38,7 @@ const MyListingsPage = async () => {
         <TabsTrigger value="expiring">Expiring soon</TabsTrigger>
         <TabsTrigger value="inactive">Inactive</TabsTrigger>
       </TabsList>
-      <TabsContent value="active">
+      <TabsContent value="active" className="flex flex-col space-y-2">
         {currentUser.listings.map(item => (
           // @ts-expect-error
           <ListingCard key={item.id} {...item} />

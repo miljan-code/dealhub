@@ -85,11 +85,11 @@ model Listing {
   location     String   @db.VarChar(32)
   phoneNumber  String   @map(name: "phone_number") @db.VarChar(32)
   views        Int      @default(0)
-  stars        Int      @default(0)
   slug         String   @default("/") @db.VarChar(255)
 
-  images ListingImage[]
-  user   User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  images    ListingImage[]
+  favorites Favorite[]
+  user      User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@index([authorId])
 }
@@ -109,8 +109,10 @@ model Favorite {
   userId    String @db.VarChar(255)
   listingId Int
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
 
   @@unique([userId, listingId])
   @@index([userId])
+  @@index([listingId])
 }

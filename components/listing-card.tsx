@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatDistanceToNowStrict } from 'date-fns';
+import { getCurrentUser } from '@/lib/session';
 import { Card } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Icons } from '@/components/icons';
@@ -9,12 +10,12 @@ import {
   DeleteListingButton,
   SendMessageButton,
 } from '@/components/client-buttons';
-import type { ListingImage, Listing } from '@prisma/client';
-import { getCurrentUser } from '@/lib/session';
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
+import type { ListingImage, Listing, Favorite } from '@prisma/client';
 
 interface ListingCardProps extends Listing {
   images: ListingImage[];
+  favorites: Favorite[];
 }
 
 export const ListingCard = async ({
@@ -23,7 +24,7 @@ export const ListingCard = async ({
   id,
   description,
   price,
-  stars,
+  favorites,
   views,
   createdAt,
   location,
@@ -31,6 +32,9 @@ export const ListingCard = async ({
   slug,
 }: ListingCardProps) => {
   const currentUser = await getCurrentUser();
+
+  const isFavorited =
+    currentUser?.favorites.some(item => item.listingId === id) || false;
 
   return (
     <Card className="grid max-h-32 grid-cols-7 justify-between gap-3 px-2 py-2">
@@ -41,7 +45,7 @@ export const ListingCard = async ({
       >
         <AspectRatio ratio={1 / 1} className="overflow-hidden">
           <Image
-            src={images[0].imageUrl}
+            src={images[0]?.imageUrl || ''}
             alt={title}
             className="rounded-md object-cover"
             fill
@@ -70,7 +74,7 @@ export const ListingCard = async ({
         </div>
         <div className="flex items-center space-x-0.5">
           <Icons.star size={18} />
-          <span className="text-foreground/75">{stars}</span>
+          <span className="text-foreground/75">{favorites.length}</span>
         </div>
       </div>
       {/* Listing Date and Location */}
@@ -91,6 +95,7 @@ export const ListingCard = async ({
             variant="secondary"
             size="sm"
             className="space-x-1"
+            listingId={id}
           >
             Delete
           </DeleteListingButton>
@@ -101,9 +106,9 @@ export const ListingCard = async ({
             size="sm"
             variant="outline"
             className="space-x-1 text-xs"
-          >
-            Favorite
-          </AddToFavoritesButton>
+            listingId={id}
+            isFavorited={isFavorited}
+          />
           <SendMessageButton
             authorId={authorId}
             listingId={id}

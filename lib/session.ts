@@ -20,6 +20,16 @@ export const getCurrentUser = async () => {
       listings: {
         include: {
           images: true,
+          favorites: true,
+        },
+      },
+      favorites: {
+        include: {
+          listing: {
+            include: {
+              images: true,
+            },
+          },
         },
       },
     },

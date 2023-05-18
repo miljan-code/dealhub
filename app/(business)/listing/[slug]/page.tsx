@@ -25,22 +25,13 @@ const getListingById = async (id: string | undefined) => {
     },
     include: {
       images: true,
+      favorites: true,
     },
   });
 
   if (!listing) return null;
 
   return listing;
-};
-
-const getUserById = async (id: string) => {
-  const user = await db.user.findFirst({
-    where: {
-      id,
-    },
-  });
-
-  return user;
 };
 
 interface ListingPageProps {
@@ -53,11 +44,10 @@ const ListingPage = async ({ params }: ListingPageProps) => {
 
   if (!listing) return notFound();
 
-  const user = await getUserById(listing.authorId);
-
-  if (!user) return notFound();
-
   const currentUser = await getCurrentUser();
+
+  const isFavorited =
+    currentUser?.favorites.some(item => item.listingId === listing.id) || false;
 
   return (
     <section className="flex flex-col space-y-5">
@@ -127,7 +117,7 @@ const ListingPage = async ({ params }: ListingPageProps) => {
                 <div className="flex items-center space-x-2">
                   <Icons.star size={16} />
                   <span className="text-xs">
-                    Favorited by {listing.stars} users
+                    Favorited by {listing.favorites.length} users
                   </span>
                 </div>
               </div>
@@ -141,9 +131,9 @@ const ListingPage = async ({ params }: ListingPageProps) => {
                   size="sm"
                   variant="outline"
                   disabled={currentUser!.id === listing.authorId}
-                >
-                  Favorite
-                </AddToFavoritesButton>
+                  listingId={listing.id}
+                  isFavorited={isFavorited}
+                />
               </div>
             </div>
           </div>

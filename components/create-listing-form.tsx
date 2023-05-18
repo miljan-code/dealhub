@@ -93,7 +93,8 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
         description: 'Redirecting to my listings page...',
       });
 
-      router.push('/');
+      router.push('/my-listings');
+      router.refresh();
     } catch (error) {
       toast({
         title: 'Something went wrong',
@@ -352,7 +353,7 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
       </div>
 
       {/* Publish btn */}
-      <Button type="submit" className="w-fit">
+      <Button type="submit" className="w-fit" disabled={isLoading}>
         Publish
       </Button>
     </form>

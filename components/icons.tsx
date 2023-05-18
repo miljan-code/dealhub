@@ -35,6 +35,7 @@ import {
   ChevronRight,
   CheckCheck,
   Pencil,
+  StarOff,
   type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -76,6 +77,7 @@ export const Icons = {
   right: ChevronRight,
   checkmark: CheckCheck,
   pencil: Pencil,
+  starOff: StarOff,
   logo: (props: LucideProps) => (
     <svg
       version="1.1"

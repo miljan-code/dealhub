@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import {
   Command,
   CommandGroup,
@@ -6,9 +7,8 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import { siteConfig } from '@/config/site';
-import Link from 'next/link';
 
-export const CategoriesAside = () => {
+export const Categories = () => {
   return (
     <Command className="border-foreground/15 border">
       <CommandInput placeholder="Search for a category" className="text-xs" />

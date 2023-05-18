@@ -3,7 +3,14 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(req: NextRequest) {
   const loginPaths = ['/login', '/register'];
-  const restrictedPaths = ['/create'];
+  const restrictedPaths = [
+    '/create',
+    '/my-listings',
+    '/messages',
+    '/notifications',
+    '/ratings',
+    '/favorites',
+  ];
   const requestedPath = req.nextUrl.pathname;
   const token = await getToken({ req });
 

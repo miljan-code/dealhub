@@ -1,6 +1,7 @@
 import db from '@/lib/db';
 import { FormData } from '@/components/create-listing-form';
 import { getSession } from '@/lib/session';
+import slugify from 'slugify';
 
 export async function POST(req: Request) {
   const session = await getSession();
@@ -33,6 +34,7 @@ export async function POST(req: Request) {
             data: images.map(imageUrl => ({ imageUrl })),
           },
         },
+        slug: slugify(listingData.title, { lower: true }),
       },
       include: {
         images: true,

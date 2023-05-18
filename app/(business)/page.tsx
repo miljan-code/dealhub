@@ -1,8 +1,12 @@
-import { Product } from '@/components/product';
+import { ListingCard } from '@/components/listing-card';
 import db from '@/lib/db';
 
 const getListings = async () => {
-  const listings = await db.listing.findMany();
+  const listings = await db.listing.findMany({
+    include: {
+      images: true,
+    },
+  });
 
   if (!listings) return null;
 
@@ -17,7 +21,7 @@ const IndexPage = async () => {
   return (
     <section className="flex flex-col space-y-3">
       {listings.map(item => (
-        <Product key={item.id} />
+        <ListingCard key={item.id} {...item} />
       ))}
     </section>
   );

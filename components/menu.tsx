@@ -11,11 +11,11 @@ import { Icons } from '@/components/icons';
 import { Navigation } from '@/components/navigation';
 import type { Session } from 'next-auth';
 
-interface SidebarProps {
+interface MenuProps {
   session: Session | null;
 }
 
-export const Sidebar = ({ session }: SidebarProps) => {
+export const Menu = ({ session }: MenuProps) => {
   const router = useRouter();
 
   const currentUser = session?.user;

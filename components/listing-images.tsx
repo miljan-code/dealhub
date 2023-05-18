@@ -4,9 +4,10 @@ import Image from 'next/image';
 import { useState, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Icons } from '@/components/icons';
+import type { ListingImage } from '@prisma/client';
 
 interface ListingImagesProps {
-  images: string[];
+  images: ListingImage[];
 }
 
 export const ListingImages: React.FC<ListingImagesProps> = ({ images }) => {
@@ -54,19 +55,19 @@ export const ListingImages: React.FC<ListingImagesProps> = ({ images }) => {
         <div ref={containerWrapperRef} className="relative h-32 w-full">
           <div
             ref={containerRef}
-            className="absolute left-0 top-0 flex items-center transition duration-300"
+            className="absolute left-0 top-0 flex items-center gap-1 transition duration-300"
           >
             {images.map(item => (
               <div
-                onClick={() => setShowImage(item)}
-                key={item}
+                onClick={() => setShowImage(item.imageUrl)}
+                key={item.id}
                 className="relative h-32 w-48"
               >
                 <Image
-                  src={item}
+                  src={item.imageUrl}
                   alt="pic"
                   fill
-                  className="cursor-pointer object-cover"
+                  className="cursor-pointer rounded-lg object-cover"
                 />
               </div>
             ))}
@@ -89,6 +90,12 @@ export const ListingImages: React.FC<ListingImagesProps> = ({ images }) => {
             className="absolute left-1/2 top-1/2 h-2/3 w-2/3 -translate-x-1/2 -translate-y-1/2"
           >
             <Image src={showImage} alt="Pic" fill className="object-contain" />
+            <div
+              onClick={() => setShowImage(null)}
+              className="absolute right-3 top-3 cursor-pointer rounded-full bg-foreground p-2 text-background"
+            >
+              <Icons.close size={32} />
+            </div>
           </Card>
         </div>
       )}

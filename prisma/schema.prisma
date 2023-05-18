@@ -62,9 +62,10 @@ model User {
   createdAt      DateTime  @default(now()) @map(name: "created_at")
   updatedAt      DateTime  @default(now()) @map(name: "updated_at")
 
-  accounts Account[]
-  sessions Session[]
-  listings Listing[]
+  accounts  Account[]
+  sessions  Session[]
+  listings  Listing[]
+  favorites Favorite[]
 
   @@map(name: "users")
 }
@@ -85,6 +86,7 @@ model Listing {
   phoneNumber  String   @map(name: "phone_number") @db.VarChar(32)
   views        Int      @default(0)
   stars        Int      @default(0)
+  slug         String   @default("/") @db.VarChar(255)
 
   images ListingImage[]
   user   User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
@@ -100,4 +102,15 @@ model ListingImage {
   listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
 
   @@index([listingId])
+}
+
+model Favorite {
+  id        Int    @id @default(autoincrement())
+  userId    String @db.VarChar(255)
+  listingId Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, listingId])
+  @@index([userId])
 }

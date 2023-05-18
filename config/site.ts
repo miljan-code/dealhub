@@ -91,3 +91,6 @@ export const siteConfig = {
   ],
   maxImagesUpload: 5,
 };
+
+// TODO: add default image for listings
+// TODO: add conditions

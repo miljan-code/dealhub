@@ -2,11 +2,11 @@ import { getSession } from '@/lib/session';
 import { Categories } from '@/components/categories';
 import { Menu } from '@/components/menu';
 
-interface HomeLayoutProps {
+interface UserLayoutProps {
   children: React.ReactNode;
 }
 
-export default async function HomeLayout({ children }: HomeLayoutProps) {
+export default async function UserLayout({ children }: UserLayoutProps) {
   const session = await getSession();
 
   return (
@@ -15,7 +15,7 @@ export default async function HomeLayout({ children }: HomeLayoutProps) {
         <Menu session={session} />
         <Categories />
       </aside>
-      <div className="flex-1">{children}</div>
+      <section className="flex-1">{children}</section>
     </main>
   );
 }

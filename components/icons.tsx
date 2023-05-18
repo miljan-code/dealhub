@@ -34,6 +34,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CheckCheck,
+  Pencil,
   type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -74,6 +75,7 @@ export const Icons = {
   left: ChevronLeft,
   right: ChevronRight,
   checkmark: CheckCheck,
+  pencil: Pencil,
   logo: (props: LucideProps) => (
     <svg
       version="1.1"

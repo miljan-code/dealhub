@@ -3,7 +3,7 @@ import { ListingCard } from '@/components/listing-card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Icons } from '@/components/icons';
 
-const getListings = async () => {
+const getListings = async (category: string) => {
   const listings = await db.listing.findMany({
     include: {
       images: true,
@@ -12,6 +12,9 @@ const getListings = async () => {
     orderBy: {
       createdAt: 'desc',
     },
+    where: {
+      category,
+    },
   });
 
   if (!listings) return null;
@@ -19,10 +22,16 @@ const getListings = async () => {
   return listings;
 };
 
-const IndexPage = async () => {
-  const listings = await getListings();
+interface Params {
+  searchParams: { category: string };
+}
 
-  if (!listings) {
+const IndexPage = async ({ searchParams }: Params) => {
+  const { category } = searchParams;
+
+  const listings = await getListings(category);
+
+  if (!listings || !listings.length) {
     return (
       <EmptyState>
         <Icons.folder size={96} />

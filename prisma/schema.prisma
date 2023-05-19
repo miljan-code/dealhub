@@ -62,10 +62,12 @@ model User {
   createdAt      DateTime  @default(now()) @map(name: "created_at")
   updatedAt      DateTime  @default(now()) @map(name: "updated_at")
 
-  accounts  Account[]
-  sessions  Session[]
-  listings  Listing[]
-  favorites Favorite[]
+  accounts      Account[]
+  sessions      Session[]
+  listings      Listing[]
+  favorites     Favorite[]
+  ratings       Rating[]       @relation("RatedUser")
+  notifications Notification[]
 
   @@map(name: "users")
 }
@@ -89,6 +91,7 @@ model Listing {
 
   images    ListingImage[]
   favorites Favorite[]
+  ratings   Rating[]
   user      User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@index([authorId])
@@ -115,4 +118,36 @@ model Favorite {
   @@unique([userId, listingId])
   @@index([userId])
   @@index([listingId])
+}
+
+model Rating {
+  id            Int      @id @default(autoincrement())
+  authorId      String   @db.VarChar(255)
+  ratedUserId   String   @db.VarChar(255)
+  createdAt     DateTime @default(now())
+  listingId     Int
+  description   Boolean
+  communcation  Boolean
+  promise       Boolean
+  overallRating Boolean
+  comment       String   @db.VarChar(255)
+
+  ratedUser User    @relation("RatedUser", fields: [ratedUserId], references: [id], onDelete: Cascade)
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@unique([authorId, listingId])
+  @@index([ratedUserId])
+  @@index([listingId])
+}
+
+model Notification {
+  id          Int      @id @default(autoincrement())
+  userId      String   @db.VarChar(255)
+  createdAt   DateTime @default(now())
+  title       String   @db.VarChar(64)
+  description String   @db.VarChar(255)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }

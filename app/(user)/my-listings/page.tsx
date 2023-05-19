@@ -44,8 +44,8 @@ const MyListingsPage = async () => {
           <ListingCard key={item.id} {...item} />
         ))}
       </TabsContent>
-      <TabsContent value="expiring">Expiring ones!</TabsContent>
-      <TabsContent value="inactive">Inactive ones!</TabsContent>
+      <TabsContent value="expiring">Expiring soon</TabsContent>
+      <TabsContent value="inactive">Inactive</TabsContent>
     </Tabs>
   );
 };

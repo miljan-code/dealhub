@@ -113,4 +113,5 @@ export const siteConfig = {
     },
   ],
   imagePlaceholder: '/images/camera-icon.png',
+  userPlaceholder: '/images/user-placeholder.png',
 };

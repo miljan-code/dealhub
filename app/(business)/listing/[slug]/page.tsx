@@ -156,7 +156,7 @@ const ListingPage = async ({ params }: ListingPageProps) => {
             {/* Listing author */}
             <div className="flex items-center space-x-1 text-sm">
               <Icons.user size={18} />
-              <span>{listing.username}</span>
+              <Link href={`/user/${listing.authorId}`}>{listing.username}</Link>
             </div>
             {/* Author location */}
             <div className="flex items-center space-x-1 text-sm">
@@ -165,19 +165,25 @@ const ListingPage = async ({ params }: ListingPageProps) => {
             </div>
             {/* Author ratings */}
             <div className="flex items-center space-x-3 text-sm">
-              <div className="flex items-center space-x-1">
+              <Link
+                href={`/user/${listing.authorId}`}
+                className="flex items-center space-x-1"
+              >
                 <Icons.thumbUp size={18} className="text-green-600" />
                 <span>0</span>
-              </div>
-              <div className="flex items-center space-x-1">
+              </Link>
+              <Link
+                href={`/user/${listing.authorId}`}
+                className="flex items-center space-x-1"
+              >
                 <Icons.thumbDown size={18} className="text-red-500" />
                 <span>0</span>
-              </div>
+              </Link>
             </div>
             {/* Author listings */}
             <div className="flex items-center space-x-1 text-sm">
               <Icons.list size={18} />
-              <Link href="/">All listings</Link>
+              <Link href={`/user/${listing.authorId}`}>All listings</Link>
             </div>
             {/* Authors phone number */}
             <div className="flex items-center space-x-1 text-sm">

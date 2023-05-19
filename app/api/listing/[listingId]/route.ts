@@ -25,3 +25,22 @@ export async function DELETE(req: Request, { params }: { params: Params }) {
     return new Response('Something went wrong!', { status: 500 });
   }
 }
+
+export async function PATCH(req: Request, { params }: { params: Params }) {
+  try {
+    await db.listing.update({
+      where: {
+        id: +params.listingId,
+      },
+      data: {
+        views: {
+          increment: 1,
+        },
+      },
+    });
+
+    return new Response('Success', { status: 200 });
+  } catch (error) {
+    return new Response('Something went wrong!', { status: 500 });
+  }
+}

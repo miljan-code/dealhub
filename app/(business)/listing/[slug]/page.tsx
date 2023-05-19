@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import db from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
-import { notFound } from 'next/navigation';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { capitalize, getConditionLabel } from '@/lib/utils';
+import { siteConfig } from '@/config/site';
 import { Icons } from '@/components/icons';
 import { ListingImages } from '@/components/listing-images';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
@@ -15,6 +16,7 @@ import {
   AddToFavoritesButton,
   SendMessageButton,
 } from '@/components/client-buttons';
+import { ReportView } from '@/components/report-view';
 
 const getListingById = async (id: string | undefined) => {
   if (!id) return null;
@@ -78,7 +80,9 @@ const ListingPage = async ({ params }: ListingPageProps) => {
               <div className="h-44 w-44">
                 <AspectRatio ratio={1 / 1} className="overflow-hidden">
                   <Image
-                    src={listing.images[0].imageUrl || ''}
+                    src={
+                      listing.images[0]?.imageUrl || siteConfig.imagePlaceholder
+                    }
                     alt="Jacket"
                     className="rounded-md object-cover"
                     fill
@@ -92,14 +96,16 @@ const ListingPage = async ({ params }: ListingPageProps) => {
                 <p className="font-medium text-red-500">
                   Price: {listing.price} €
                 </p>
-                <div className="flex items-center">
+                <div className="flex items-center space-x-2">
                   {listing.isFixedPrice && (
                     <span className="text-xs text-muted-foreground">
                       Fixed price
                     </span>
                   )}
                   {listing.isFixedPrice && listing.isTradeable && (
-                    <span>&mdash;</span>
+                    <span className="text-xs text-muted-foreground">
+                      &mdash;
+                    </span>
                   )}
                   {listing.isTradeable && (
                     <span className="text-xs text-muted-foreground">
@@ -188,7 +194,7 @@ const ListingPage = async ({ params }: ListingPageProps) => {
       </Card>
 
       {/* Images container */}
-      <ListingImages images={listing.images} />
+      {listing.images.length > 0 && <ListingImages images={listing.images} />}
 
       {/* Ratings */}
       <Card className="overflow-hidden">
@@ -203,6 +209,9 @@ const ListingPage = async ({ params }: ListingPageProps) => {
           <Rating />
         </div>
       </Card>
+
+      {/* Analytics */}
+      <ReportView listingId={listing.id} />
     </section>
   );
 };

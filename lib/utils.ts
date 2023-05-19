@@ -1,3 +1,4 @@
+import { siteConfig } from '@/config/site';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -10,16 +11,11 @@ export function capitalize(str: string) {
 }
 
 export function getConditionLabel(str: string) {
-  switch (str) {
-    case 'new':
-      return 'New — Vacuum sealed';
-    case 'like-new':
-      return 'Like new — Unused';
-    case 'used':
-      return 'Used — Good condition';
-    case 'damaged':
-      return 'Damaged — Not working';
-    default:
-      return 'Used — Good condition';
-  }
+  const condition = siteConfig.productCondition.find(
+    item => item.value === str
+  );
+
+  if (!condition) return `Used — Good condition`;
+
+  return `${condition.label} — ${condition.sublabel}`;
 }

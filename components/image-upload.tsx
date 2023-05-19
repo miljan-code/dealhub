@@ -1,9 +1,9 @@
 'use client';
 
 import { CldUploadWidget } from 'next-cloudinary';
+import { siteConfig } from '@/config/site';
 import { Icons } from '@/components/icons';
 import type { UploadedImage } from '@/types/image-upload';
-import { siteConfig } from '@/config/site';
 
 interface ImageUploadProps {
   uploadedImages: number;

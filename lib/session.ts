@@ -1,7 +1,6 @@
 import { getServerSession } from 'next-auth';
-
-import { authOptions } from './auth';
-import db from './db';
+import { authOptions } from '@/lib/auth';
+import db from '@/lib/db';
 
 export const getSession = async () => {
   return await getServerSession(authOptions);
@@ -21,6 +20,9 @@ export const getCurrentUser = async () => {
         include: {
           images: true,
           favorites: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
         },
       },
       favorites: {

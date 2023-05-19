@@ -237,54 +237,21 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
           onValueChange={value => setCustomValue('condition', value)}
           className="flex items-center space-x-2"
         >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="new" id="new">
-              <Label
-                htmlFor="new"
-                className="flex cursor-pointer flex-col space-y-1"
-              >
-                <span className="text-sm">New</span>
-                <span className="text-xs text-foreground/75">
-                  Vacuum sealed
-                </span>
-              </Label>
-            </RadioGroupItem>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="like-new" id="like-new">
-              <Label
-                htmlFor="like-new"
-                className="flex cursor-pointer flex-col space-y-1"
-              >
-                <span className="text-sm">Like new</span>
-                <span className="text-xs text-foreground/75">Unused</span>
-              </Label>
-            </RadioGroupItem>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="used" id="used">
-              <Label
-                htmlFor="used"
-                className="flex cursor-pointer flex-col space-y-1"
-              >
-                <span className="text-sm">Used</span>
-                <span className="text-xs text-foreground/75">
-                  Good condition
-                </span>
-              </Label>
-            </RadioGroupItem>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="damaged" id="damaged">
-              <Label
-                htmlFor="damaged"
-                className="flex cursor-pointer flex-col space-y-1"
-              >
-                <span className="text-sm">Damaged</span>
-                <span className="text-xs text-foreground/75">Not working</span>
-              </Label>
-            </RadioGroupItem>
-          </div>
+          {siteConfig.productCondition.map(item => (
+            <div key={item.value} className="flex items-center space-x-2">
+              <RadioGroupItem value={item.value} id={item.value}>
+                <Label
+                  htmlFor={item.value}
+                  className="flex cursor-pointer flex-col space-y-1"
+                >
+                  <span className="text-sm">{item.label}</span>
+                  <span className="text-xs text-foreground/75">
+                    {item.sublabel}
+                  </span>
+                </Label>
+              </RadioGroupItem>
+            </div>
+          ))}
         </RadioGroup>
         {errors?.condition?.message && (
           <p className="px-1 text-xs text-red-600">

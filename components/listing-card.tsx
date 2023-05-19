@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { getCurrentUser } from '@/lib/session';
+import { siteConfig } from '@/config/site';
 import { Card } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Icons } from '@/components/icons';
@@ -45,7 +46,7 @@ export const ListingCard = async ({
       >
         <AspectRatio ratio={1 / 1} className="overflow-hidden">
           <Image
-            src={images[0]?.imageUrl || ''}
+            src={images[0]?.imageUrl || siteConfig.imagePlaceholder}
             alt={title}
             className="rounded-md object-cover"
             fill

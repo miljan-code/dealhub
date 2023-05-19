@@ -90,7 +90,27 @@ export const siteConfig = {
     },
   ],
   maxImagesUpload: 5,
+  productCondition: [
+    {
+      value: 'new',
+      label: 'New',
+      sublabel: 'Vacuum sealed',
+    },
+    {
+      value: 'like-new',
+      label: 'Like new',
+      sublabel: 'Unused',
+    },
+    {
+      value: 'used',
+      label: 'Used',
+      sublabel: 'Good condition',
+    },
+    {
+      value: 'damaged',
+      label: 'Damaged',
+      sublabel: 'Not working',
+    },
+  ],
+  imagePlaceholder: '/images/camera-icon.png',
 };
-
-// TODO: add default image for listings
-// TODO: add conditions

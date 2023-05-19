@@ -57,7 +57,7 @@ export const ListingImages: React.FC<ListingImagesProps> = ({ images }) => {
             ref={containerRef}
             className="absolute left-0 top-0 flex items-center gap-1 transition duration-300"
           >
-            {images.map(item => (
+            {images?.map(item => (
               <div
                 onClick={() => setShowImage(item.imageUrl)}
                 key={item.id}

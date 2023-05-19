@@ -6,8 +6,7 @@ import { cn } from '@/lib/utils';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { buttonVariants } from '@/components/ui/button';
-import type { VariantProps } from 'class-variance-authority';
-import { toast } from './ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,7 +17,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from './ui/alert-dialog';
+} from '@/components/ui/alert-dialog';
+import type { VariantProps } from 'class-variance-authority';
 
 interface SendMessageButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,

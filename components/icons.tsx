@@ -37,6 +37,8 @@ import {
   Pencil,
   StarOff,
   ChevronDown,
+  Frown,
+  Send,
   type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -80,6 +82,8 @@ export const Icons = {
   pencil: Pencil,
   starOff: StarOff,
   down: ChevronDown,
+  sadFace: Frown,
+  send: Send,
   logo: (props: LucideProps) => (
     <svg
       version="1.1"

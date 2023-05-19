@@ -92,6 +92,7 @@ model Listing {
   images    ListingImage[]
   favorites Favorite[]
   ratings   Rating[]
+  chats     Chat[]
   user      User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@index([authorId])
@@ -150,4 +151,29 @@ model Notification {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+model Chat {
+  id        Int    @id @default(autoincrement())
+  listingId Int
+  userOneId String @db.VarChar(255)
+  userTwoId String @db.VarChar(255)
+
+  messages Message[]
+  listing  Listing   @relation(fields: [listingId], references: [id])
+
+  @@unique([listingId, userOneId, userTwoId])
+  @@index([listingId])
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  chatId    Int
+  senderId  String   @db.VarChar(255)
+  message   String   @db.VarChar(1000)
+  createdAt DateTime @default(now())
+
+  chat Chat @relation(fields: [chatId], references: [id])
+
+  @@index([chatId])
 }

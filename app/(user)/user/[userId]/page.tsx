@@ -8,6 +8,8 @@ import { Icons } from '@/components/icons';
 import { Rating } from '@/components/rating';
 import { ListingCard } from '@/components/listing-card';
 
+const SHOW_LISTINGS = 3;
+
 const getUserById = async (id: string) => {
   const user = await db.user.findUnique({
     where: {
@@ -19,7 +21,7 @@ const getUserById = async (id: string) => {
           images: true,
           favorites: true,
         },
-        take: 3,
+        take: SHOW_LISTINGS,
       },
       _count: {
         select: {
@@ -83,18 +85,23 @@ const UserPage = async ({ params }: Params) => {
           </span>
         </div>
         <hr />
-        <div className="flex flex-col px-6 py-2">
+        <div className="flex flex-col px-4 py-2">
+          {/* TODO: add real ratings */}
           <Rating />
         </div>
       </Card>
+
+      {/* TODO: add tabs?? */}
 
       {user.listings.map(item => (
         // @ts-expect-error
         <ListingCard key={item} {...item} />
       ))}
-      <span className="mt-2 flex cursor-pointer items-center justify-center gap-0.5 text-xs">
-        Show all <Icons.down size={10} />
-      </span>
+      {user.listings.length === SHOW_LISTINGS && (
+        <span className="mt-2 flex cursor-pointer items-center justify-center gap-0.5 text-xs">
+          Show all <Icons.down size={10} />
+        </span>
+      )}
     </section>
   );
 };

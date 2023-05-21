@@ -31,6 +31,7 @@ const getChatsAndCurrentUser = async () => {
           favorites: true,
         },
       },
+      ratings: true,
     },
   });
 

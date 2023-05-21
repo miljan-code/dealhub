@@ -133,13 +133,16 @@ model Rating {
   promise       Boolean
   overallRating Boolean
   comment       String   @db.VarChar(255)
+  chatId        Int
 
   ratedUser User    @relation("RatedUser", fields: [ratedUserId], references: [id], onDelete: Cascade)
   listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  chat      Chat    @relation(fields: [chatId], references: [id], onDelete: Cascade)
 
-  @@unique([authorId, listingId])
+  @@unique([ratedUserId, authorId, chatId])
   @@index([ratedUserId])
   @@index([listingId])
+  @@index([chatId])
 }
 
 model Notification {
@@ -161,6 +164,7 @@ model Chat {
   userTwoId String @db.VarChar(255)
 
   messages Message[]
+  ratings  Rating[]
   listing  Listing   @relation(fields: [listingId], references: [id])
 
   @@unique([listingId, userOneId, userTwoId])

@@ -11,7 +11,7 @@ interface MessageCardProps {
 }
 
 export const getUserNameById = async (id: string) => {
-  return await db.user.findUnique({
+  return await db.user.findFirst({
     where: {
       id,
     },

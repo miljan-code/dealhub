@@ -10,6 +10,8 @@ export async function POST(req: Request) {
     return new Error('You need to be logged in first!');
   }
 
+  // FIXME: do the zod validation on data you are getting from user
+
   const data = (await req.json()) as FormData;
 
   const { images, ...listingData } = data;

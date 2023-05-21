@@ -28,6 +28,15 @@ const getListingById = async (id: string | undefined) => {
     include: {
       images: true,
       favorites: true,
+      user: {
+        include: {
+          ratings: {
+            include: {
+              listing: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -208,11 +217,11 @@ const ListingPage = async ({ params }: ListingPageProps) => {
           <p className="text-xs">Newest ratings for Foo Bar</p>
         </div>
         <div className="flex flex-col">
-          <Rating />
-          <div className="h-[1px] w-full bg-border" />
-          <Rating />
-          <div className="h-[1px] w-full bg-border" />
-          <Rating />
+          {listing.user.ratings.map(item => (
+            // @ts-expect-error
+            <Rating key={item.id} {...item} />
+          ))}
+          {/* TODO: Fix UI, maybe <hr> or wrap in Card */}
         </div>
       </Card>
 

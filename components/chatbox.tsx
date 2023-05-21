@@ -17,8 +17,10 @@ import type {
   Listing,
   ListingImage,
   Message as MessageType,
+  Rating,
   User,
 } from '@prisma/client';
+import { RatingDialog } from './rating-dialog';
 
 export type ListingWithImageAndFavorites = Listing & {
   images: ListingImage[];
@@ -30,6 +32,7 @@ export type ChatWithListingAndMessages = Chat & {
   messages: (MessageType & {
     sender: User;
   })[];
+  ratings: Rating[];
 };
 
 interface ChatboxProps {
@@ -61,6 +64,25 @@ export const Chatbox = ({
 
     return chat;
   }, [chats, currentUser.id, user.id, listing.id]);
+
+  const isRateable = useMemo(() => {
+    if (!activeChat) return false;
+
+    const userIds = [currentUser.id, user.id];
+
+    const ratingAuthorsIdsForActiveChat = activeChat.ratings.map(
+      item => item.authorId
+    );
+
+    if (ratingAuthorsIdsForActiveChat.includes(currentUser.id)) {
+      return false;
+    }
+
+    const chatParticipantIds = activeChat?.messages.map(item => item.senderId);
+
+    // TODO: do this check on server also!
+    return userIds.every(id => chatParticipantIds.includes(id));
+  }, [currentUser.id, user.id, activeChat]);
 
   const handleSendMessage = async (e: FormEvent) => {
     e.preventDefault();
@@ -99,13 +121,18 @@ export const Chatbox = ({
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-1">
           <Icons.user size={16} />
-          <span className="text-sm">{user.name}</span>
+          <Link href={`/user/${user.id}`} className="text-sm">
+            {user.name}
+          </Link>
         </div>
-        <div className="flex items-center gap-1">
-          {/* TODO: popover */}
-          <Icons.thumbUp size={16} />
-          <span className="text-sm">Rate user</span>
-        </div>
+        {isRateable && (
+          <RatingDialog
+            chat={activeChat!}
+            user={user}
+            currentUser={currentUser}
+            listing={listing}
+          />
+        )}
       </div>
       <hr />
       {/* Listing INFO */}

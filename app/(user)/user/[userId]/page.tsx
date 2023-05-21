@@ -23,6 +23,11 @@ const getUserById = async (id: string) => {
         },
         take: SHOW_LISTINGS,
       },
+      ratings: {
+        include: {
+          listing: true,
+        },
+      },
       _count: {
         select: {
           listings: true,
@@ -77,19 +82,23 @@ const UserPage = async ({ params }: Params) => {
         </div>
       </Card>
 
-      <Card className="overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-3 text-xs">
-          <span>Recent ratings for user {user.name}</span>
-          <span className="flex cursor-pointer items-center gap-0.5">
-            Show all <Icons.down size={10} />
-          </span>
-        </div>
-        <hr />
-        <div className="flex flex-col px-4 py-2">
-          {/* TODO: add real ratings */}
-          <Rating />
-        </div>
-      </Card>
+      {user.ratings && user.ratings.length > 0 && (
+        <Card className="overflow-hidden">
+          <div className="flex items-center justify-between px-6 py-3 text-xs">
+            <span>Recent ratings for user {user.name}</span>
+            <span className="flex cursor-pointer items-center gap-0.5">
+              Show all <Icons.down size={10} />
+            </span>
+          </div>
+          <hr />
+          <div className="flex flex-col px-4 py-2">
+            {user.ratings.map(item => (
+              // @ts-expect-error
+              <Rating key={item.id} {...item} />
+            ))}
+          </div>
+        </Card>
+      )}
 
       {/* TODO: add tabs?? */}
 

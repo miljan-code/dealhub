@@ -1,6 +1,7 @@
 import db from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
 import type { Chat, Message } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 
 interface Data {
   senderId: string;

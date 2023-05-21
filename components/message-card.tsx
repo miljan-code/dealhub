@@ -35,11 +35,13 @@ export const MessageCard = async ({
     <>
       <Link
         href={`/messages?userId=${senderId}&listingId=${chat.listingId}`}
-        className="grid grid-cols-4 px-2 py-2 transition hover:bg-accent"
+        className="grid grid-cols-4 rounded-md px-2 py-2 transition hover:bg-accent"
       >
         <span className="truncate">{sender?.name || ''}</span>
         <span className="truncate">{chat.listing.title}</span>
-        <span className="truncate">{chat.messages.at(-1)?.message}</span>
+        <span className="truncate text-foreground/50">
+          {chat.messages.at(-1)?.message}
+        </span>
         <span className="truncate">
           {format(
             new Date(chat.messages.at(-1)?.createdAt || ''),

@@ -12,12 +12,19 @@ const getChatsAndCurrentUser = async () => {
 
   if (!currentUser) return null;
 
-  const chats = await db.chat?.findMany({
+  const chats = await db.chat.findMany({
     where: {
       OR: [{ userOneId: currentUser.id }, { userTwoId: currentUser.id }],
     },
     include: {
-      messages: true,
+      messages: {
+        include: {
+          sender: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      },
       listing: {
         include: {
           images: true,

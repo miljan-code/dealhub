@@ -42,6 +42,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="relative min-h-screen">
+            {/* @ts-expect-error */}
             <Header />
             {children}
           </div>

@@ -10,12 +10,13 @@ import { Icons } from '@/components/icons';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { Message } from '@/components/message';
 import type {
   Chat,
   Favorite,
   Listing,
   ListingImage,
-  Message,
+  Message as MessageType,
   User,
 } from '@prisma/client';
 
@@ -26,7 +27,9 @@ export type ListingWithImageAndFavorites = Listing & {
 
 export type ChatWithListingAndMessages = Chat & {
   listing: ListingWithImageAndFavorites;
-  messages: Message[];
+  messages: (MessageType & {
+    sender: User;
+  })[];
 };
 
 interface ChatboxProps {
@@ -161,11 +164,13 @@ export const Chatbox = ({
       {/* Chat window */}
       {/* TODO: change pattern based on theme */}
       <div className="px-4 py-3">
-        <Card className="flex h-96 flex-col-reverse gap-2 overflow-y-scroll bg-chat-pattern px-4 py-2">
+        <Card className="flex h-96 flex-col-reverse gap-2 overflow-y-scroll px-4 py-2">
           {activeChat?.messages.map(item => (
-            <div key={item.id} className="">
-              <p>{item.message}</p>
-            </div>
+            <Message
+              key={item.id}
+              {...item}
+              isCurrentUserSender={currentUser.id === item.senderId}
+            />
           ))}
         </Card>
       </div>

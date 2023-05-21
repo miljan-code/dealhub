@@ -1,4 +1,15 @@
+'use client';
+
+import Link from 'next/link';
+import Image from 'next/image';
+import { FormEvent, useMemo, useRef, useState } from 'react';
+import { formatDistanceToNowStrict } from 'date-fns';
+import { siteConfig } from '@/config/site';
 import { Card } from '@/components/ui/card';
+import { Icons } from '@/components/icons';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
 import type {
   Chat,
   Favorite,
@@ -7,34 +18,77 @@ import type {
   Message,
   User,
 } from '@prisma/client';
-import { Icons } from './icons';
-import Link from 'next/link';
-import { AspectRatio } from './ui/aspect-ratio';
-import Image from 'next/image';
-import { siteConfig } from '@/config/site';
-import { formatDistanceToNowStrict } from 'date-fns';
-import { Textarea } from './ui/textarea';
-import { Button } from './ui/button';
 
 export type ListingWithImageAndFavorites = Listing & {
   images: ListingImage[];
   favorites: Favorite[];
 };
 
-// export type ChatWithListingAndMessages = Chat & {
-//   listing: ListingWithImageAndFavorites;
-//   messages: Message[];
-// };
+export type ChatWithListingAndMessages = Chat & {
+  listing: ListingWithImageAndFavorites;
+  messages: Message[];
+};
 
 interface ChatboxProps {
-  listings: ListingWithImageAndFavorites[];
+  listing: ListingWithImageAndFavorites;
   currentUser: User;
   user: User;
-  // chats: ChatWithListingAndMessages[] | undefined;
+  chats: ChatWithListingAndMessages[] | undefined;
 }
 
-export const Chatbox = ({ listings, currentUser, user }: ChatboxProps) => {
-  const [listing] = listings;
+export const Chatbox = ({
+  listing,
+  currentUser,
+  user,
+  chats,
+}: ChatboxProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const activeChat = useMemo(() => {
+    const userIds: string[] = [currentUser.id, user.id];
+
+    const chat = chats?.find(
+      item =>
+        item.listingId === listing.id &&
+        userIds.includes(item.userOneId) &&
+        userIds.includes(item.userTwoId)
+    );
+
+    return chat;
+  }, [chats, currentUser.id, user.id, listing.id]);
+
+  const handleSendMessage = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const message = textareaRef.current?.value;
+
+    if (!message) return null;
+
+    setIsLoading(true);
+
+    try {
+      await fetch('/api/send-message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          senderId: currentUser.id,
+          receiverId: user.id,
+          listingId: listing.id,
+          message: message,
+        }),
+      });
+
+      textareaRef.current.value = '';
+    } catch (error) {
+      // handle error
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Card>
@@ -107,17 +161,29 @@ export const Chatbox = ({ listings, currentUser, user }: ChatboxProps) => {
       {/* Chat window */}
       {/* TODO: change pattern based on theme */}
       <div className="px-4 py-3">
-        <Card className="flex h-96 flex-col-reverse gap-2 overflow-y-scroll bg-chat-pattern px-4 py-2"></Card>
+        <Card className="flex h-96 flex-col-reverse gap-2 overflow-y-scroll bg-chat-pattern px-4 py-2">
+          {activeChat?.messages.map(item => (
+            <div key={item.id} className="">
+              <p>{item.message}</p>
+            </div>
+          ))}
+        </Card>
       </div>
-      <div className="px-4">
-        <Textarea className="h-20" placeholder="Write your message here" />
-      </div>
-      <div className="flex items-center justify-end px-4 py-3">
-        <Button className="space-x-2">
-          <Icons.send size={18} />
-          <span>Send message</span>
-        </Button>
-      </div>
+      <form onSubmit={handleSendMessage}>
+        <div className="px-4">
+          <Textarea
+            ref={textareaRef}
+            className="h-20"
+            placeholder="Write your message here"
+          />
+        </div>
+        <div className="flex items-center justify-end px-4 py-3">
+          <Button disabled={isLoading} type="submit" className="space-x-2">
+            <Icons.send size={18} />
+            <span>Send message</span>
+          </Button>
+        </div>
+      </form>
     </Card>
   );
 };

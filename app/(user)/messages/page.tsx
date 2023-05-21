@@ -5,47 +5,49 @@ import { Chatbox } from '@/components/chatbox';
 import { Icons } from '@/components/icons';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Card } from '@/components/ui/card';
+import { MessageCard } from '@/components/message-card';
 
-// const getChatsAndCurrentUser = async () => {
-//   const currentUser = await getCurrentUser();
+const getChatsAndCurrentUser = async () => {
+  const currentUser = await getCurrentUser();
 
-//   if (!currentUser) return null;
+  if (!currentUser) return null;
 
-//   const chats = await db.chat?.findMany({
-//     where: {
-//       OR: [{ userOneId: currentUser.id }, { userTwoId: currentUser.id }],
-//     },
-//     include: {
-//       messages: true,
-//       listing: {
-//         include: {
-//           images: true,
-//           favorites: true,
-//         },
-//       },
-//     },
-//   });
-
-//   return { currentUser, chats };
-// };
-
-const getUserAndListingById = async (userId: string, listingId: number) => {
-  return await db.user.findUnique({
+  const chats = await db.chat?.findMany({
     where: {
-      id: userId,
+      OR: [{ userOneId: currentUser.id }, { userTwoId: currentUser.id }],
     },
     include: {
-      listings: {
+      messages: true,
+      listing: {
         include: {
           images: true,
           favorites: true,
         },
-        where: {
-          id: listingId,
-        },
       },
     },
   });
+
+  return { currentUser, chats };
+};
+
+const getUserAndListingById = async (userId: string, listingId: number) => {
+  const user = await db.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+
+  const listing = await db.listing.findUnique({
+    where: {
+      id: listingId,
+    },
+    include: {
+      images: true,
+      favorites: true,
+    },
+  });
+
+  return { user, listing };
 };
 
 interface Params {
@@ -56,12 +58,10 @@ interface Params {
 }
 
 const MessagesPage = async ({ searchParams }: Params) => {
-  const currentUser = await getCurrentUser();
-  // const chatsAndUser = await getChatsAndCurrentUser();
+  const chatsAndUser = await getChatsAndCurrentUser();
 
-  // const currentUser = chatsAndUser?.currentUser;
-  // const chats = chatsAndUser?.chats;
-  const chats: string[] = []; // TEMP
+  const currentUser = chatsAndUser?.currentUser;
+  const chats = chatsAndUser?.chats;
 
   const { listingId, userId } = searchParams;
 
@@ -80,9 +80,9 @@ const MessagesPage = async ({ searchParams }: Params) => {
   }
 
   if (listingId && userId) {
-    const user = await getUserAndListingById(userId, +listingId);
+    const { user, listing } = await getUserAndListingById(userId, +listingId);
 
-    if (!user || !user.listings.length) {
+    if (!user || !listing) {
       return (
         <EmptyState className="space-y-1.5">
           <Icons.sadFace size={96} />
@@ -98,17 +98,34 @@ const MessagesPage = async ({ searchParams }: Params) => {
 
     return (
       <Chatbox
-        listings={user.listings}
+        listing={listing}
         currentUser={currentUser}
         user={user}
-        // chats={chats}
+        chats={chats}
       />
     );
   }
 
   return (
-    <Card>
-      <div className="px-3 py-2">Hey There!</div>
+    <Card className="text-sm">
+      <div className="grid grid-cols-4 px-3 py-2">
+        <span>User</span>
+        <span>Listing</span>
+        <span>Message</span>
+        <span>Date</span>
+      </div>
+      <hr />
+      <div className="px-3 py-2">
+        {chats?.map((item, i) => (
+          // @ts-expect-error
+          <MessageCard
+            key={item.id}
+            chat={item}
+            currentUser={currentUser}
+            lastItem={i === chats.length - 1}
+          />
+        ))}
+      </div>
     </Card>
   );
 };

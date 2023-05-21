@@ -136,7 +136,7 @@ const ListingPage = async ({ params }: ListingPageProps) => {
                 <AddToFavoritesButton
                   size="sm"
                   variant="outline"
-                  disabled={currentUser!.id === listing.authorId}
+                  disabled={currentUser?.id === listing.authorId}
                   listingId={listing.id}
                   isFavorited={isFavorited}
                 />
@@ -149,7 +149,7 @@ const ListingPage = async ({ params }: ListingPageProps) => {
               listingId={listing.id}
               iconSize={20}
               className="space-x-1"
-              disabled={currentUser!.id === listing.authorId}
+              disabled={currentUser?.id === listing.authorId}
             >
               Send a message
             </SendMessageButton>

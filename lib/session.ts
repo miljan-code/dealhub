@@ -34,6 +34,14 @@ export const getCurrentUser = async () => {
           },
         },
       },
+      ratings: {
+        include: {
+          listing: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      },
     },
   });
 

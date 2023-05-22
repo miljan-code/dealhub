@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { siteConfig } from '@/config/site';
 import type { UseFormSetValue, FieldValues, Path } from 'react-hook-form';
+import { Rating } from '@prisma/client';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -41,4 +42,12 @@ export const setCustomValue = <
   }
 ) => {
   setValue(field, value, options);
+};
+
+export const countRatings = (arr: Rating[]) => {
+  const positiveRatings = arr.filter(item => item.overallRating).length;
+
+  const negativeRatings = arr.filter(item => !item.overallRating).length;
+
+  return { positiveRatings, negativeRatings };
 };

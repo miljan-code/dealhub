@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import { Icons } from '@/components/icons';
 import { Rating } from '@/components/rating';
 import { ListingCard } from '@/components/listing-card';
+import { countRatings } from '@/lib/utils';
 
 const SHOW_LISTINGS = 3;
 
@@ -50,6 +51,8 @@ const UserPage = async ({ params }: Params) => {
 
   if (!user) return notFound();
 
+  const { positiveRatings, negativeRatings } = countRatings(user.ratings);
+
   return (
     <section className="flex flex-col gap-3">
       <Card className="flex items-center justify-between px-6 py-4">
@@ -61,11 +64,11 @@ const UserPage = async ({ params }: Params) => {
           <div className="flex items-center space-x-3 text-sm">
             <div className="flex items-center space-x-1">
               <Icons.thumbUp size={18} className="text-green-600" />
-              <span>0</span>
+              <span>{positiveRatings}</span>
             </div>
             <div className="flex items-center space-x-1">
               <Icons.thumbDown size={18} className="text-red-500" />
-              <span>0</span>
+              <span>{negativeRatings}</span>
             </div>
           </div>
           <span className="text-xs">

@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import db from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
 import { formatDistanceToNowStrict } from 'date-fns';
-import { capitalize, getConditionLabel } from '@/lib/utils';
+import { capitalize, countRatings, getConditionLabel } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 import { Icons } from '@/components/icons';
 import { ListingImages } from '@/components/listing-images';
@@ -59,6 +59,10 @@ const ListingPage = async ({ params }: ListingPageProps) => {
 
   const isFavorited =
     currentUser?.favorites.some(item => item.listingId === listing.id) || false;
+
+  const { positiveRatings, negativeRatings } = countRatings(
+    listing.user.ratings
+  );
 
   return (
     <section className="flex flex-col space-y-5">
@@ -179,14 +183,14 @@ const ListingPage = async ({ params }: ListingPageProps) => {
                 className="flex items-center space-x-1"
               >
                 <Icons.thumbUp size={18} className="text-green-600" />
-                <span>0</span>
+                <span>{positiveRatings}</span>
               </Link>
               <Link
                 href={`/user/${listing.authorId}`}
                 className="flex items-center space-x-1"
               >
                 <Icons.thumbDown size={18} className="text-red-500" />
-                <span>0</span>
+                <span>{negativeRatings}</span>
               </Link>
             </div>
             {/* Author listings */}

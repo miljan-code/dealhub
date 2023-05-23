@@ -89,6 +89,20 @@ export async function POST(req: Request) {
       },
     });
 
+    if (rating) {
+      await db.notification.create({
+        data: {
+          title: 'You have a new rating',
+          description: `User ${
+            currentUser.name
+          } just rated you with an overall ${
+            overallRating ? 'positive' : 'negative'
+          } rating. You can see this rating at ratings page.`,
+          userId: data.ratedUserId,
+        },
+      });
+    }
+
     return new Response(JSON.stringify(rating), { status: 201 });
   } catch (error) {
     // TODO: catch Zod and prisma errs

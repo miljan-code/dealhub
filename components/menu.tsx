@@ -13,9 +13,10 @@ import type { Session } from 'next-auth';
 
 interface MenuProps {
   session: Session | null;
+  notificationCount: number;
 }
 
-export const Menu = ({ session }: MenuProps) => {
+export const Menu = ({ session, notificationCount }: MenuProps) => {
   const router = useRouter();
 
   const currentUser = session?.user;
@@ -50,13 +51,19 @@ export const Menu = ({ session }: MenuProps) => {
             className="relative cursor-pointer"
           >
             <div className="absolute inset-0 h-full w-full backdrop-blur-[2px]" />
-            <Navigation items={siteConfig.mainNav} />
+            <Navigation
+              notificationCount={notificationCount}
+              items={siteConfig.mainNav}
+            />
           </div>
         </>
       )}
       {!!currentUser && (
         <>
-          <Navigation items={siteConfig.mainNav} />
+          <Navigation
+            notificationCount={notificationCount}
+            items={siteConfig.mainNav}
+          />
           <hr />
           <Button
             variant="ghost"

@@ -42,6 +42,7 @@ export const getCurrentUser = async () => {
           createdAt: 'desc',
         },
       },
+      notifications: true,
     },
   });
 

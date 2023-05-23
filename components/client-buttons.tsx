@@ -200,3 +200,52 @@ export const DeleteListingButton: React.FC<DeleteListingButtonProps> = ({
     </AlertDialog>
   );
 };
+
+interface MarkAsReadButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  notificationId: number;
+  children: React.ReactNode;
+}
+
+export const MarkAsReadButton: React.FC<MarkAsReadButtonProps> = ({
+  size = 'xs',
+  variant = 'outline',
+  className,
+  children,
+  notificationId,
+  ...props
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
+
+  const handleMarkAsRead = async () => {
+    setIsLoading(true);
+
+    try {
+      await fetch(`/api/notification/${notificationId}`, {
+        method: 'DELETE',
+      });
+
+      router.refresh();
+    } catch (error) {
+      // TODO: handle errors
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Button
+      onClick={handleMarkAsRead}
+      variant={variant}
+      size={size}
+      className={cn('space-x-2', className)}
+      disabled={isLoading}
+      {...props}
+    >
+      <span>{children}</span>
+    </Button>
+  );
+};

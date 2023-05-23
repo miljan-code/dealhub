@@ -66,7 +66,7 @@ export const RatingDialog: React.FC<RatingDialogProps> = ({
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/rate-user', {
+      const res = await fetch('/api/rating', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

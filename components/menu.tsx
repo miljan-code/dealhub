@@ -1,25 +1,18 @@
-'use client';
-
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { signOut } from 'next-auth/react';
 import { cn } from '@/lib/utils';
+import { getCurrentUser } from '@/lib/session';
 import { siteConfig } from '@/config/site';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Icons } from '@/components/icons';
 import { Navigation } from '@/components/navigation';
-import type { Session } from 'next-auth';
+import { SignOutButton } from '@/components/client-buttons';
+import { NoAuthSidebar } from '@/components/no-auth-sidebar';
 
-interface MenuProps {
-  session: Session | null;
-  notificationCount: number;
-}
+export const Menu = async () => {
+  const currentUser = await getCurrentUser();
 
-export const Menu = ({ session, notificationCount }: MenuProps) => {
-  const router = useRouter();
-
-  const currentUser = session?.user;
+  const notificationCount = currentUser?.notifications?.length || 0;
 
   return (
     <Card className="flex flex-col space-y-3 px-4 py-3">
@@ -46,16 +39,7 @@ export const Menu = ({ session, notificationCount }: MenuProps) => {
               Register
             </Link>
           </div>
-          <div
-            onClick={() => router.push('/login')}
-            className="relative cursor-pointer"
-          >
-            <div className="absolute inset-0 h-full w-full backdrop-blur-[2px]" />
-            <Navigation
-              notificationCount={notificationCount}
-              items={siteConfig.mainNav}
-            />
-          </div>
+          <NoAuthSidebar />
         </>
       )}
       {!!currentUser && (
@@ -65,15 +49,7 @@ export const Menu = ({ session, notificationCount }: MenuProps) => {
             items={siteConfig.mainNav}
           />
           <hr />
-          <Button
-            variant="ghost"
-            size="xs"
-            className="justify-start space-x-2 text-xs"
-            onClick={() => signOut()}
-          >
-            <Icons.logout size={14} />
-            <span>Sign out</span>
-          </Button>
+          <SignOutButton />
         </>
       )}
     </Card>

@@ -19,6 +19,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import type { VariantProps } from 'class-variance-authority';
+import { signOut } from 'next-auth/react';
 
 interface SendMessageButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -246,6 +247,20 @@ export const MarkAsReadButton: React.FC<MarkAsReadButtonProps> = ({
       {...props}
     >
       <span>{children}</span>
+    </Button>
+  );
+};
+
+export const SignOutButton = () => {
+  return (
+    <Button
+      variant="ghost"
+      size="xs"
+      className="justify-start space-x-2 text-xs"
+      onClick={() => signOut()}
+    >
+      <Icons.logout size={14} />
+      <span>Sign out</span>
     </Button>
   );
 };

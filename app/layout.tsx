@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
-import { ThemeToggle } from '@/components/theme-toggle';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
@@ -45,9 +44,6 @@ const RootLayout = ({ children }: RootLayoutProps) => {
             {/* @ts-expect-error */}
             <Header />
             {children}
-          </div>
-          <div className="fixed bottom-5 right-5">
-            <ThemeToggle />
           </div>
           <TailwindIndicator />
           <Toaster />

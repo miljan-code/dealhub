@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { signOut } from 'next-auth/react';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { buttonVariants } from '@/components/ui/button';
@@ -18,8 +19,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { TwitterShareButton } from 'react-share';
 import type { VariantProps } from 'class-variance-authority';
-import { signOut } from 'next-auth/react';
 
 interface SendMessageButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -262,5 +263,21 @@ export const SignOutButton = () => {
       <Icons.logout size={14} />
       <span>Sign out</span>
     </Button>
+  );
+};
+
+interface ShareButtonProps {
+  slug: string;
+}
+
+export const ShareButton = ({ slug }: ShareButtonProps) => {
+  return (
+    // TODO: change this hardcoded url
+    <TwitterShareButton url={`https://dealhub.miljan.xyz${slug}`}>
+      <Button className="w-full space-x-2" size="sm" variant="outline">
+        <Icons.share size={16} />
+        <span>Share</span>
+      </Button>
+    </TwitterShareButton>
   );
 };

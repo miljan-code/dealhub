@@ -2,8 +2,26 @@ import db from '@/lib/db';
 import { ListingCard } from '@/components/listing-card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Icons } from '@/components/icons';
+import { Prisma } from '@prisma/client';
 
-const getListings = async (category: string) => {
+interface QueryOptions {
+  category?: string;
+  term?: string;
+}
+
+const getListings = async (options: QueryOptions) => {
+  let query: Prisma.ListingWhereInput = {};
+
+  if (options.category) {
+    query.category = options.category;
+  }
+
+  if (options.term) {
+    query.title = {
+      contains: options.term,
+    };
+  }
+
   const listings = await db.listing.findMany({
     include: {
       images: true,
@@ -12,9 +30,7 @@ const getListings = async (category: string) => {
     orderBy: {
       createdAt: 'desc',
     },
-    where: {
-      category,
-    },
+    where: query,
   });
 
   if (!listings) return null;
@@ -23,13 +39,16 @@ const getListings = async (category: string) => {
 };
 
 interface Params {
-  searchParams: { category: string };
+  searchParams: {
+    category: string;
+    term: string;
+  };
 }
 
 const IndexPage = async ({ searchParams }: Params) => {
-  const { category } = searchParams;
+  const { category, term } = searchParams;
 
-  const listings = await getListings(category);
+  const listings = await getListings({ category, term });
 
   if (!listings || !listings.length) {
     return (
@@ -39,7 +58,7 @@ const IndexPage = async ({ searchParams }: Params) => {
           There are no currently active listings
         </EmptyState.Heading>
         <EmptyState.Text className="mb-3">
-          But you can post one in just a couple of seconds ;)
+          But you can post one in just a couple of seconds
         </EmptyState.Text>
       </EmptyState>
     );

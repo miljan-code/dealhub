@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { buttonVariants } from '@/components/ui/button';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Icons } from '@/components/icons';
 import db from '@/lib/db';
+import { Search } from './search';
 
 const getListingsCount = async () => {
   return await db.listing.aggregate({
@@ -23,16 +23,9 @@ export const Header = async () => {
           <Icons.logo className="h-6 w-6" />
           <span className="font-bold">{siteConfig.name}</span>
         </Link>
-        <div className="relative flex-1">
-          <Input
-            type="text"
-            placeholder={`Anything you want... (${listingsCount} listings)`}
-          />
-          <Button variant="secondary" className="absolute bottom-0 right-0">
-            <Icons.search />
-          </Button>
-        </div>
+        <Search listingsCount={listingsCount} />
         <div className="flex items-center justify-end space-x-4">
+          <ThemeToggle />
           <Link href="/create" className={cn(buttonVariants(), 'space-x-1')}>
             <Icons.plus />
             <span>Sell something</span>

@@ -9,14 +9,16 @@ import { siteConfig } from '@/config/site';
 import { Icons } from '@/components/icons';
 import { ListingImages } from '@/components/listing-images';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Rating } from '@/components/rating';
 import {
   AddToFavoritesButton,
   SendMessageButton,
+  ShareButton,
 } from '@/components/client-buttons';
 import { ReportView } from '@/components/report-view';
+
+const RATINGS_PER_LISTING = 3;
 
 const getListingById = async (id: string | undefined) => {
   if (!id) return null;
@@ -63,6 +65,8 @@ const ListingPage = async ({ params }: ListingPageProps) => {
   const { positiveRatings, negativeRatings } = countRatings(
     listing.user.ratings
   );
+
+  const ratings = currentUser?.ratings.slice(0, RATINGS_PER_LISTING);
 
   return (
     <section className="flex flex-col space-y-5">
@@ -142,10 +146,7 @@ const ListingPage = async ({ params }: ListingPageProps) => {
               </div>
               {/* Share & Favorite buttons */}
               <div className="flex w-32 flex-col space-y-1">
-                <Button className="space-x-2" size="sm" variant="outline">
-                  <Icons.share size={16} />
-                  <span>Share</span>
-                </Button>
+                <ShareButton slug={`/listing/${params.slug}`} />
                 <AddToFavoritesButton
                   size="sm"
                   variant="outline"
@@ -216,18 +217,23 @@ const ListingPage = async ({ params }: ListingPageProps) => {
       {listing.images.length > 0 && <ListingImages images={listing.images} />}
 
       {/* Ratings */}
-      <Card className="overflow-hidden">
-        <div className="border-b border-border px-3 py-2">
-          <p className="text-xs">Newest ratings for Foo Bar</p>
-        </div>
-        <div className="flex flex-col">
-          {listing.user.ratings.map(item => (
-            // @ts-expect-error
-            <Rating key={item.id} {...item} />
-          ))}
-          {/* TODO: Fix UI, maybe <hr> or wrap in Card */}
-        </div>
-      </Card>
+      {ratings && (
+        <Card className="overflow-hidden">
+          <div className="flex items-center justify-between border-b border-border px-3 py-2 text-xs">
+            <p>Newest ratings for Foo Bar</p>
+            <Link href={`/user/${listing.authorId}`}>Show all</Link>
+          </div>
+          <div className="flex flex-col">
+            {ratings.map((item, i) => (
+              <>
+                {/* @ts-expect-error */}
+                <Rating key={item.id} {...item} />
+                {i !== ratings.length - 1 && <hr />}
+              </>
+            ))}
+          </div>
+        </Card>
+      )}
 
       {/* Analytics */}
       <ReportView listingId={listing.id} />

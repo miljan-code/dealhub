@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import { Icons } from '@/components/icons';
 import { getUserNameById } from '@/components/message-card';
 import type { Listing, Rating as RatingType } from '@prisma/client';
+import Link from 'next/link';
 
 interface RatingProps extends RatingType {
   listing: Listing;
@@ -28,7 +29,9 @@ export const Rating = async ({
           ) : (
             <Icons.thumbDown size={16} className="text-red-500" />
           )}
-          <span className="text-sm">{author?.name}</span>
+          <Link href={`/user/${authorId}`} className="text-sm">
+            {author?.name}
+          </Link>
         </div>
         <p className="text-xs">{format(createdAt, 'dd. MMM yyyy')}</p>
       </div>

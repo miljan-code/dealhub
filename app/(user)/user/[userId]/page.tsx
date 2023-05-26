@@ -94,10 +94,13 @@ const UserPage = async ({ params }: Params) => {
             </span>
           </div>
           <hr />
-          <div className="flex flex-col px-4 py-2">
-            {user.ratings.map(item => (
-              // @ts-expect-error
-              <Rating key={item.id} {...item} />
+          <div className="flex flex-col">
+            {user.ratings.map((item, i) => (
+              <>
+                {/* @ts-expect-error */}
+                <Rating key={item.id} {...item} />
+                {i !== user.ratings.length - 1 && <hr />}
+              </>
             ))}
           </div>
         </Card>

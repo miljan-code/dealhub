@@ -116,11 +116,11 @@ const MessagesPage = async ({ searchParams }: Params) => {
 
   return (
     <Card className="text-sm">
-      <div className="grid grid-cols-4 px-3 py-2">
+      <div className="grid grid-cols-3 px-3 py-2 sm:grid-cols-4">
         <span>User</span>
         <span>Listing</span>
         <span>Message</span>
-        <span>Date</span>
+        <span className="hidden sm:inline">Date</span>
       </div>
       <hr />
       <div className="px-3 py-2">

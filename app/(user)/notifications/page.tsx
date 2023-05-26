@@ -33,7 +33,7 @@ const NotificationsPage = async () => {
             <h2>{item.title}</h2>
             <span>{format(item.createdAt, 'dd. MM. yyyy')}</span>
           </div>
-          <div className="bg-muted px-3 py-2 text-sm">
+          <div className="rounded-sm bg-muted px-3 py-2 text-sm">
             <p>{item.description}</p>
           </div>
           <div className="flex items-center justify-end">

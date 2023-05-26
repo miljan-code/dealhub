@@ -36,18 +36,30 @@ export const Rating = async ({
         <p className="text-xs">{format(createdAt, 'dd. MMM yyyy')}</p>
       </div>
       <h3 className="my-1.5">{listing.title}</h3>
-      <div className="mb-2 flex items-center text-sm">
-        <div className="flex flex-1 flex-col">
+      <div className="mb-2 flex flex-col text-sm sm:flex-row sm:items-center">
+        <div className="flex flex-1 items-center gap-1 sm:flex-col sm:items-start sm:gap-0">
           <p className="text-foreground/75">Description was correct:</p>
-          {description ? <Icons.checkmark /> : <Icons.close />}
+          {description ? (
+            <Icons.checkmark className="text-green-500" />
+          ) : (
+            <Icons.close className="text-red-500" />
+          )}
         </div>
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 items-center gap-1 sm:flex-col sm:items-start sm:gap-0">
           <p className="text-foreground/75">Communication was smooth:</p>
-          {communcation ? <Icons.checkmark /> : <Icons.close />}
+          {communcation ? (
+            <Icons.checkmark className="text-green-500" />
+          ) : (
+            <Icons.close className="text-red-500" />
+          )}
         </div>
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 items-center gap-1 sm:flex-col sm:items-start sm:gap-0">
           <p className="text-foreground/75">Honored a promise:</p>
-          {promise ? <Icons.checkmark /> : <Icons.close />}
+          {promise ? (
+            <Icons.checkmark className="text-green-500" />
+          ) : (
+            <Icons.close className="text-red-500" />
+          )}
         </div>
       </div>
       <div className="rounded-md bg-muted p-3">

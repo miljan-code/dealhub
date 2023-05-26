@@ -42,6 +42,7 @@ import {
   Menu,
   Info,
   Settings,
+  Link,
   type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -90,6 +91,7 @@ export const Icons = {
   menu: Menu,
   info: Info,
   settings: Settings,
+  link: Link,
   logo: (props: LucideProps) => (
     <svg
       version="1.1"

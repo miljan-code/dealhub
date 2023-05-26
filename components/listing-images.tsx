@@ -10,20 +10,33 @@ interface ListingImagesProps {
   images: ListingImage[];
 }
 
+const imageWidthPX = 192;
+
 export const ListingImages: React.FC<ListingImagesProps> = ({ images }) => {
   const [showImage, setShowImage] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const containerWrapperRef = useRef<HTMLDivElement>(null);
+
+  const calculatePixelsFromString = (str: string) => {
+    return +str
+      .split('')
+      .filter(char => !isNaN(+char))
+      .join('');
+  };
 
   const handleScrollLeft = () => {
     if (!containerRef.current || !containerWrapperRef.current) {
       return null;
     }
 
-    const containerWidth = containerRef.current.offsetWidth;
-    const containerWrapperWidth = containerWrapperRef.current.offsetWidth;
+    const currentTranslateX = containerRef.current.style.transform;
+    const currentValue = calculatePixelsFromString(currentTranslateX);
 
-    if (containerWidth > containerWrapperWidth) {
+    if (currentValue > imageWidthPX) {
+      containerRef.current.style.transform = `translateX(-${
+        currentValue - imageWidthPX
+      }px)`;
+    } else {
       containerRef.current.style.transform = `translateX(0px)`;
     }
   };
@@ -35,8 +48,14 @@ export const ListingImages: React.FC<ListingImagesProps> = ({ images }) => {
 
     const containerWidth = containerRef.current.offsetWidth;
     const containerWrapperWidth = containerWrapperRef.current.offsetWidth;
+    const currentTranslateX = containerRef.current.style.transform;
+    const currentValue = calculatePixelsFromString(currentTranslateX);
 
-    if (containerWidth > containerWrapperWidth) {
+    if (containerWrapperWidth + currentValue + imageWidthPX < containerWidth) {
+      containerRef.current.style.transform = `translateX(-${
+        currentValue + imageWidthPX
+      }px)`;
+    } else {
       containerRef.current.style.transform = `translateX(-${
         containerWidth - containerWrapperWidth
       }px)`;

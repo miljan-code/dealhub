@@ -112,7 +112,7 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
       onSubmit={handleSubmit(onSubmit)}
     >
       {/* Images */}
-      <div className="flex items-center space-x-3">
+      <div className="flex flex-wrap items-center gap-3">
         {(imagesArray?.length || 0) < siteConfig.maxImagesUpload && (
           <ImageUpload
             uploadedImages={imagesArray?.length || 0}
@@ -133,7 +133,7 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
               />
               <div
                 onClick={() => handleDeleteImage(item)}
-                className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive opacity-0 transition duration-300 group-hover:opacity-100"
+                className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive opacity-100 transition duration-300 md:opacity-0 md:group-hover:opacity-100"
               >
                 <Icons.close size={14} color="white" />
               </div>
@@ -160,7 +160,7 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
       <div className="flex flex-col space-y-2">
         <label className="text-sm">Category</label>
         <Select onValueChange={value => setCustomValue('category', value)}>
-          <SelectTrigger className="w-1/4">
+          <SelectTrigger className="w-1/2 sm:w-1/3">
             <SelectValue placeholder="Choose one" />
           </SelectTrigger>
           <SelectContent>
@@ -177,7 +177,7 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
       </div>
 
       {/* Price */}
-      <div className="flex w-1/4 flex-col space-y-2">
+      <div className="flex w-1/3 flex-col space-y-2 sm:w-1/4">
         <Label htmlFor="price">Price</Label>
         <Input
           type="number"
@@ -235,7 +235,7 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
         <label className="text-sm">Condition</label>
         <RadioGroup
           onValueChange={value => setCustomValue('condition', value)}
-          className="flex items-center space-x-2"
+          className="flex flex-wrap items-center gap-2 sm:flex-nowrap"
         >
           {siteConfig.productCondition.map(item => (
             <div key={item.value} className="flex items-center space-x-2">
@@ -274,7 +274,7 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
       {/* Personal data */}
       <div className="flex flex-col space-y-4">
         <p className="mb-4">Personal data</p>
-        <div className="flex w-1/3 flex-col space-y-2">
+        <div className="flex w-1/2 flex-col space-y-2 sm:w-1/3">
           <Label htmlFor="username">Username</Label>
           <Input
             type="text"
@@ -289,7 +289,7 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
             </p>
           )}
         </div>
-        <div className="flex w-1/3 flex-col space-y-2">
+        <div className="flex w-1/2 flex-col space-y-2 sm:w-1/3">
           <Label htmlFor="location">Location</Label>
           <Input
             type="text"
@@ -303,7 +303,7 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
             </p>
           )}
         </div>
-        <div className="flex w-1/3 flex-col space-y-2">
+        <div className="flex w-1/2 flex-col space-y-2 sm:w-1/3">
           <Label htmlFor="phone">Phone number</Label>
           <Input
             type="text"

@@ -30,6 +30,7 @@ export const getCurrentUser = async () => {
           listing: {
             include: {
               images: true,
+              favorites: true,
             },
           },
         },

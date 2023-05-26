@@ -41,6 +41,9 @@ export const Header = async () => {
           <MobileMenu />
         </div>
       </div>
+      <div className="block border-t md:hidden md:border-none">
+        <Search rounded={false} listingsCount={listingsCount} />
+      </div>
     </header>
   );
 };

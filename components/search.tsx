@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
 interface SearchProps {
-  listingsCount?: number;
+  listingsCount: number;
   rounded?: boolean;
 }
 

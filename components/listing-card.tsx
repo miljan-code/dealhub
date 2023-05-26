@@ -12,6 +12,7 @@ import {
   SendMessageButton,
 } from '@/components/client-buttons';
 import { Button } from '@/components/ui/button';
+import { ListingSettingsDropdown } from '@/components/listing-settings-dropdown';
 import type { ListingImage, Listing, Favorite } from '@prisma/client';
 
 interface ListingCardProps extends Listing {
@@ -66,6 +67,7 @@ export const ListingCard = async ({
       {/* Listing price */}
       <div className="flex flex-col items-center py-1.5 sm:text-start">
         <p className="font-medium text-red-500">{price}€</p>
+        {/* MOBILE VIEW START */}
         <div className="flex items-start space-x-3 py-1.5 text-xs sm:hidden">
           <div className="flex items-center space-x-0.5">
             <Icons.eye size={18} />
@@ -73,21 +75,13 @@ export const ListingCard = async ({
           </div>
           <div className="flex items-center space-x-0.5">
             <Icons.star size={18} />
-            <span className="text-foreground/75">{favorites.length}</span>
+            <span className="text-foreground/75">{favorites?.length}</span>
           </div>
         </div>
         {currentUser?.id === authorId && (
-          <div className="flex flex-col sm:hidden">
-            <Button
-              variant="secondary"
-              size="xs"
-              className="space-x-1 text-xs font-normal"
-            >
-              <Icons.settings size={14} />
-              <span>Settings</span>
-            </Button>
-          </div>
+          <ListingSettingsDropdown listingId={id} />
         )}
+        {/* MOBILE VIEW END */}
       </div>
       {/* Views and Stars */}
       <div className="hidden items-start space-x-3 py-1.5 sm:flex">
@@ -97,7 +91,7 @@ export const ListingCard = async ({
         </div>
         <div className="flex items-center space-x-0.5">
           <Icons.star size={18} />
-          <span className="text-foreground/75">{favorites.length}</span>
+          <span className="text-foreground/75">{favorites?.length}</span>
         </div>
       </div>
       {/* Listing Date and Location */}

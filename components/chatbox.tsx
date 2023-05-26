@@ -137,7 +137,7 @@ export const Chatbox = ({
       <hr />
       {/* Listing INFO */}
       <div className="flex flex-col space-y-2 px-4 py-2">
-        <div className="grid h-24 grid-cols-6 gap-6">
+        <div className="grid h-24 grid-cols-4 gap-6 sm:grid-cols-6">
           <Link
             href={`/listing/${listing.slug}-${listing.id}`}
             className="col-span-1 flex cursor-pointer items-center justify-center"
@@ -164,9 +164,21 @@ export const Chatbox = ({
           </div>
           <div className="py-1.5">
             <p className="font-medium text-red-500">{listing.price}€</p>
+            {/* MOBILE VIEW START */}
+            <div className="flex items-center space-x-0.5">
+              <Icons.eye size={18} />
+              <span className="text-foreground/75">{listing.views}</span>
+            </div>
+            <div className="flex items-center space-x-0.5">
+              <Icons.star size={18} />
+              <span className="text-foreground/75">
+                {listing.favorites.length}
+              </span>
+            </div>
+            {/* MOBILE VIEW END */}
           </div>
           {/* Views and Stars */}
-          <div className="flex items-start space-x-3 py-1.5">
+          <div className="hidden items-start space-x-3 py-1.5 sm:flex">
             <div className="flex items-center space-x-0.5">
               <Icons.eye size={18} />
               <span className="text-foreground/75">{listing.views}</span>
@@ -179,7 +191,7 @@ export const Chatbox = ({
             </div>
           </div>
           {/* Listing Date and Location */}
-          <div className="flex flex-col py-1.5 text-sm">
+          <div className="hidden flex-col py-1.5 text-sm sm:flex">
             <p className="text-xs">
               {formatDistanceToNowStrict(new Date(listing.createdAt))} ago
             </p>

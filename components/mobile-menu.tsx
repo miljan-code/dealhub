@@ -21,17 +21,24 @@ const MenuContent = ({ onCloseMenu }: MenuContentProps) => {
   return (
     <div
       className={cn(
-        'fixed right-0 top-0 h-screen w-1/2 bg-background/90 backdrop-blur-sm transition duration-300',
+        'fixed right-0 top-0 z-50 h-screen w-1/2 bg-background/90 backdrop-blur-sm transition duration-300',
         {
           'translate-x-full': !mounted,
           'translate-x-0': mounted,
         }
       )}
     >
-      <div className="mb-10 flex justify-end px-2 py-4">
+      <div className="flex cursor-pointer justify-end px-2 pt-4">
         <Icons.close size={32} onClick={onCloseMenu} />
       </div>
-      <div onClick={onCloseMenu} className="flex flex-col items-center gap-3">
+      <div onClick={onCloseMenu} className="flex flex-col items-center gap-2">
+        <Link
+          href="/"
+          className="mb-4 flex items-center justify-center space-x-2"
+        >
+          <Icons.logo className="h-12 w-12" />
+          <span className="text-xl font-bold">{siteConfig.name}</span>
+        </Link>
         {siteConfig.mainNav.map(item => (
           <Link
             key={item.href}

@@ -19,10 +19,11 @@ export const Message: React.FC<MessageProps> = ({
   return (
     <div
       className={cn(
-        'flex w-fit max-w-xs gap-3 rounded-md bg-accent px-4 py-2',
+        'flex w-fit max-w-xs gap-3 rounded-t-md bg-accent/50 px-4 py-2',
         {
-          'self-end': isCurrentUserSender,
-          'self-start': !isCurrentUserSender,
+          'flex-row-reverse self-end rounded-bl-md bg-indigo-600/30':
+            isCurrentUserSender,
+          'self-start rounded-br-md': !isCurrentUserSender,
         }
       )}
     >
@@ -33,7 +34,11 @@ export const Message: React.FC<MessageProps> = ({
           fill
         />
       </div>
-      <div className="flex flex-col space-y-1">
+      <div
+        className={cn('flex flex-col space-y-1', {
+          'items-end': isCurrentUserSender,
+        })}
+      >
         <span className="text-sm">{message}</span>
         <span className="text-xs text-foreground/50">
           {format(createdAt, 'dd.MM.yy hh:ss')}

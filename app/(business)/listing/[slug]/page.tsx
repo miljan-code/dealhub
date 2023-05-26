@@ -83,8 +83,8 @@ const ListingPage = async ({ params }: ListingPageProps) => {
         </div>
         <hr />
         {/* Listing body */}
-        <div className="grid grid-cols-3">
-          <div className="col-span-2 grid grid-cols-2 gap-2 p-4">
+        <div className="grid sm:grid-cols-3">
+          <div className="col-span-2 grid gap-2 p-4 sm:grid-cols-2">
             <div className="col-span-1 flex flex-col space-y-3">
               {/* Title & condition */}
               <div className="flex flex-col">
@@ -94,7 +94,7 @@ const ListingPage = async ({ params }: ListingPageProps) => {
                 </span>
               </div>
               {/* Leading image */}
-              <div className="h-44 w-44">
+              <div className="sm:h-44 sm:w-44">
                 <AspectRatio ratio={1 / 1} className="overflow-hidden">
                   <Image
                     src={
@@ -107,9 +107,9 @@ const ListingPage = async ({ params }: ListingPageProps) => {
                 </AspectRatio>
               </div>
             </div>
-            <div className="flex flex-col space-y-6">
+            <div className="flex flex-wrap gap-6 sm:flex-col sm:flex-nowrap">
               {/* Price */}
-              <div className="flex flex-col">
+              <div className="flex basis-full flex-col sm:basis-auto">
                 <p className="font-medium text-red-500">
                   Price: {listing.price} €
                 </p>
@@ -145,7 +145,7 @@ const ListingPage = async ({ params }: ListingPageProps) => {
                 </div>
               </div>
               {/* Share & Favorite buttons */}
-              <div className="flex w-32 flex-col space-y-1">
+              <div className="flex w-32 flex-col gap-1">
                 <ShareButton slug={`/listing/${params.slug}`} />
                 <AddToFavoritesButton
                   size="sm"
@@ -157,12 +157,12 @@ const ListingPage = async ({ params }: ListingPageProps) => {
               </div>
             </div>
           </div>
-          <div className="col-span-1 flex flex-col space-y-3 border-l border-border p-4">
+          <div className="flex flex-wrap justify-between gap-5 border-l border-border p-4 sm:col-span-1 sm:flex-col sm:flex-nowrap sm:justify-start sm:gap-3">
             <SendMessageButton
               authorId={listing.authorId}
               listingId={listing.id}
               iconSize={20}
-              className="space-x-1"
+              className="w-full space-x-1 sm:w-fit"
               disabled={currentUser?.id === listing.authorId}
             >
               Send a message

@@ -273,7 +273,10 @@ interface ShareButtonProps {
 export const ShareButton = ({ slug }: ShareButtonProps) => {
   return (
     // TODO: change this hardcoded url
-    <TwitterShareButton url={`https://dealhub.miljan.xyz${slug}`}>
+    <TwitterShareButton
+      url={`https://dealhub.miljan.xyz${slug}`}
+      className="hidden sm:block"
+    >
       <div
         className={cn(
           buttonVariants({ variant: 'outline' }),

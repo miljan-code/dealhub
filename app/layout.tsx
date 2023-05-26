@@ -44,9 +44,6 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           <div className="relative min-h-screen">
             {/* @ts-expect-error */}
             <Header />
-            <div className="block md:hidden">
-              <Search rounded={false} />
-            </div>
             {children}
           </div>
           <TailwindIndicator />

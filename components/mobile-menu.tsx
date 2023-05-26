@@ -46,6 +46,7 @@ const MenuContent = ({ onCloseMenu, currentUser }: MenuContentProps) => {
           <div className="mb-3 flex w-full flex-col gap-2 px-5">
             <Link
               href="/login"
+              onClick={onCloseMenu}
               className={cn(
                 buttonVariants({ variant: 'outline', size: 'sm' }),
                 'space-x-2'
@@ -56,6 +57,7 @@ const MenuContent = ({ onCloseMenu, currentUser }: MenuContentProps) => {
             </Link>
             <Link
               href="/register"
+              onClick={onCloseMenu}
               className={buttonVariants({ variant: 'secondary', size: 'sm' })}
             >
               Register

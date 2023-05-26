@@ -22,6 +22,7 @@ export async function DELETE(req: Request, { params }: { params: Params }) {
 
     return new Response('Success', { status: 200 });
   } catch (error) {
+    console.log(error);
     return new Response('Something went wrong!', { status: 500 });
   }
 }

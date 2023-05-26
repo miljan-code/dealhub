@@ -49,7 +49,7 @@ export const Menu = async () => {
             items={siteConfig.mainNav}
           />
           <hr />
-          <SignOutButton />
+          <SignOutButton variant="ghost" size="xs" iconSize={14} />
         </>
       )}
     </Card>

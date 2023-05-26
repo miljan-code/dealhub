@@ -165,7 +165,7 @@ model Chat {
 
   messages Message[]
   ratings  Rating[]
-  listing  Listing   @relation(fields: [listingId], references: [id])
+  listing  Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
 
   @@unique([listingId, userOneId, userTwoId])
   @@index([listingId])
@@ -178,7 +178,7 @@ model Message {
   message   String   @db.VarChar(1000)
   createdAt DateTime @default(now())
 
-  chat   Chat @relation(fields: [chatId], references: [id])
+  chat   Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
   sender User @relation(fields: [senderId], references: [id])
 
   @@index([chatId])

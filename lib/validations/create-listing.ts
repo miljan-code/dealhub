@@ -24,7 +24,10 @@ export const createListingSchema = z.object({
   condition: z.string({
     required_error: 'Product condition is required',
   }),
-  description: z.string().optional(),
+  description: z
+    .string()
+    .max(1000, { message: 'Description must be maximum 1000 characters long' })
+    .optional(),
   location: z
     .string()
     .min(1, {

@@ -74,7 +74,10 @@ const ListingPage = async ({ params }: ListingPageProps) => {
         {/* Listing header */}
         <div className="flex items-center justify-between px-3 py-2 text-sm">
           <p>
-            <Link href="/?category=sports" className="text-indigo-500">
+            <Link
+              href={`/?category=${listing.category}`}
+              className="text-indigo-500"
+            >
               {capitalize(listing.category)}
             </Link>{' '}
             / Listing ID: {listing.id}

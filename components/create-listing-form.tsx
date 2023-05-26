@@ -268,6 +268,11 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
           id="description"
           {...register('description')}
         />
+        {errors?.description?.message && (
+          <p className="px-1 text-xs text-red-600">
+            {errors.description.message}
+          </p>
+        )}
       </div>
       <hr />
 

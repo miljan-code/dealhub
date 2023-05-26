@@ -9,12 +9,14 @@ import { useMounted } from '@/hooks/use-mounted';
 import { Icons } from '@/components/icons';
 import { buttonVariants } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { SignOutButton } from '@/components/client-buttons';
 
 interface MenuContentProps {
   onCloseMenu: () => void;
+  currentUser: string | undefined;
 }
 
-const MenuContent = ({ onCloseMenu }: MenuContentProps) => {
+const MenuContent = ({ onCloseMenu, currentUser }: MenuContentProps) => {
   const mounted = useMounted();
   useLockBodyScroll();
 
@@ -31,28 +33,64 @@ const MenuContent = ({ onCloseMenu }: MenuContentProps) => {
       <div className="flex cursor-pointer justify-end px-2 pt-4">
         <Icons.close size={32} onClick={onCloseMenu} />
       </div>
-      <div onClick={onCloseMenu} className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-2">
         <Link
           href="/"
+          onClick={onCloseMenu}
           className="mb-4 flex items-center justify-center space-x-2"
         >
           <Icons.logo className="h-12 w-12" />
           <span className="text-xl font-bold">{siteConfig.name}</span>
         </Link>
-        {siteConfig.mainNav.map(item => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              buttonVariants({ variant: 'ghost', size: 'sm' }),
-              'justify-start space-x-2 text-sm'
-            )}
-          >
-            <item.icon size={18} />
-            <span>{item.title}</span>
-          </Link>
-        ))}
-        <Link href="/create" className={cn(buttonVariants())}>
+        {!currentUser && (
+          <div className="mb-3 flex w-full flex-col gap-2 px-5">
+            <Link
+              href="/login"
+              className={cn(
+                buttonVariants({ variant: 'outline', size: 'sm' }),
+                'space-x-2'
+              )}
+            >
+              <Icons.login size={16} />
+              <span>Login</span>
+            </Link>
+            <Link
+              href="/register"
+              className={buttonVariants({ variant: 'secondary', size: 'sm' })}
+            >
+              Register
+            </Link>
+          </div>
+        )}
+        {currentUser &&
+          siteConfig.mainNav.map(item => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={onCloseMenu}
+              className={cn(
+                buttonVariants({ variant: 'ghost', size: 'sm' }),
+                'justify-start space-x-2 text-sm'
+              )}
+            >
+              <item.icon size={18} />
+              <span>{item.title}</span>
+            </Link>
+          ))}
+        {currentUser && (
+          <SignOutButton
+            onClick={onCloseMenu}
+            iconSize={18}
+            className="mb-3 text-sm"
+            variant="ghost"
+            size="sm"
+          />
+        )}
+        <Link
+          href="/create"
+          onClick={onCloseMenu}
+          className={cn(buttonVariants(), 'mb-3')}
+        >
           <Icons.plus />
           <span>Sell something</span>
         </Link>
@@ -62,7 +100,11 @@ const MenuContent = ({ onCloseMenu }: MenuContentProps) => {
   );
 };
 
-export const MobileMenu = () => {
+interface MobileMenuProps {
+  currentUser: string | undefined;
+}
+
+export const MobileMenu = ({ currentUser }: MobileMenuProps) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const handleShowMenu = () => setShowMenu(prev => !prev);
@@ -76,7 +118,9 @@ export const MobileMenu = () => {
           className="cursor-pointer"
         />
       )}
-      {showMenu && <MenuContent onCloseMenu={handleShowMenu} />}
+      {showMenu && (
+        <MenuContent currentUser={currentUser} onCloseMenu={handleShowMenu} />
+      )}
     </div>
   );
 };

@@ -25,7 +25,7 @@ export const UserAuthSocials = () => {
         disabled={isLoading}
       >
         <Icons.google className="h-4 w-4" />
-        <span>Continue with Google</span>
+        <span className="text-xs sm:text-sm">Continue with Google</span>
       </Button>
       <Button
         onClick={() => handleSignIn('github')}
@@ -34,7 +34,7 @@ export const UserAuthSocials = () => {
         disabled={isLoading}
       >
         <Icons.gitHub className="h-4 w-4" />
-        <span>Continue with GitHub</span>
+        <span className="text-xs sm:text-sm">Continue with GitHub</span>
       </Button>
     </div>
   );

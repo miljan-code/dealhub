@@ -21,11 +21,11 @@ interface ListingSettingsDropdownProps {
 export const ListingSettingsDropdown = ({
   listingId,
 }: ListingSettingsDropdownProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
     <div className="flex flex-col sm:hidden">
-      <DropdownMenu onOpenChange={() => setIsOpen(true)}>
+      <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
         <DropdownMenuTrigger>
           <div
             className={cn(
@@ -58,6 +58,7 @@ export const ListingSettingsDropdown = ({
               listingId={listingId}
               iconSize={14}
               className="h-fit w-full justify-start space-x-1 p-0 hover:bg-transparent"
+              onDropdownClose={() => setDropdownOpen(false)}
             >
               Delete
             </DeleteListingButton>

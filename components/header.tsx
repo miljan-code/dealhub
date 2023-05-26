@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import db from '@/lib/db';
 import { cn } from '@/lib/utils';
+import { getCurrentUser } from '@/lib/session';
 import { siteConfig } from '@/config/site';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { buttonVariants } from '@/components/ui/button';
@@ -16,6 +17,7 @@ const getListingsCount = async () => {
 
 export const Header = async () => {
   const { _count: listingsCount } = await getListingsCount();
+  const currentUser = await getCurrentUser();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
@@ -38,7 +40,7 @@ export const Header = async () => {
             <Icons.plus />
             <span>Sell something</span>
           </Link>
-          <MobileMenu />
+          <MobileMenu currentUser={currentUser?.email} />
         </div>
       </div>
       <div className="block border-t md:hidden md:border-none">

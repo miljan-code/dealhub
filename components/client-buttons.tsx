@@ -137,6 +137,7 @@ interface DeleteListingButtonProps
   iconSize?: number;
   listingId: number;
   children: React.ReactNode;
+  onDropdownClose?: () => void;
 }
 
 export const DeleteListingButton: React.FC<DeleteListingButtonProps> = ({
@@ -146,6 +147,7 @@ export const DeleteListingButton: React.FC<DeleteListingButtonProps> = ({
   className,
   listingId,
   children,
+  onDropdownClose,
   ...props
 }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -166,6 +168,7 @@ export const DeleteListingButton: React.FC<DeleteListingButtonProps> = ({
       });
     }
 
+    onDropdownClose?.();
     router.refresh();
     setIsLoading(false);
   };
@@ -252,15 +255,24 @@ export const MarkAsReadButton: React.FC<MarkAsReadButtonProps> = ({
   );
 };
 
-export const SignOutButton = () => {
+interface SignOutButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  iconSize?: number;
+}
+
+export const SignOutButton = ({
+  className,
+  iconSize = 14,
+  ...props
+}: SignOutButtonProps) => {
   return (
     <Button
-      variant="ghost"
-      size="xs"
-      className="justify-start space-x-2 text-xs"
+      className={cn('justify-start space-x-2 text-xs', className)}
       onClick={() => signOut()}
+      {...props}
     >
-      <Icons.logout size={14} />
+      <Icons.logout size={iconSize} />
       <span>Sign out</span>
     </Button>
   );

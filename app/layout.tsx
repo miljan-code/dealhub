@@ -8,6 +8,7 @@ import { Header } from '@/components/header';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
+import { Search } from '@/components/search';
 
 export const metadata: Metadata = {
   title: {
@@ -43,6 +44,9 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           <div className="relative min-h-screen">
             {/* @ts-expect-error */}
             <Header />
+            <div className="block md:hidden">
+              <Search rounded={false} />
+            </div>
             {children}
           </div>
           <TailwindIndicator />

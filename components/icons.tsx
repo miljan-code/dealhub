@@ -39,6 +39,9 @@ import {
   ChevronDown,
   Frown,
   Send,
+  Menu,
+  Info,
+  Settings,
   type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -84,6 +87,9 @@ export const Icons = {
   down: ChevronDown,
   sadFace: Frown,
   send: Send,
+  menu: Menu,
+  info: Info,
+  settings: Settings,
   logo: (props: LucideProps) => (
     <svg
       version="1.1"

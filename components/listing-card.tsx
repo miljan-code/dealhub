@@ -38,7 +38,7 @@ export const ListingCard = async ({
     currentUser?.favorites.some(item => item.listingId === id) || false;
 
   return (
-    <Card className="grid max-h-32 grid-cols-7 justify-between gap-3 px-2 py-2">
+    <Card className="grid grid-cols-4 justify-between gap-3 px-2 py-2 sm:grid-cols-7">
       {/* Image */}
       <Link
         href={`/listing/${slug}-${id}`}
@@ -64,11 +64,33 @@ export const ListingCard = async ({
         <p className="line-clamp-3 text-xs text-foreground/70">{description}</p>
       </div>
       {/* Listing price */}
-      <div className="py-1.5">
+      <div className="flex flex-col items-center py-1.5 sm:text-start">
         <p className="font-medium text-red-500">{price}€</p>
+        <div className="flex items-start space-x-3 py-1.5 text-xs sm:hidden">
+          <div className="flex items-center space-x-0.5">
+            <Icons.eye size={18} />
+            <span className="text-foreground/75">{views}</span>
+          </div>
+          <div className="flex items-center space-x-0.5">
+            <Icons.star size={18} />
+            <span className="text-foreground/75">{favorites.length}</span>
+          </div>
+        </div>
+        {currentUser?.id === authorId && (
+          <div className="flex flex-col sm:hidden">
+            <Button
+              variant="secondary"
+              size="xs"
+              className="space-x-1 text-xs font-normal"
+            >
+              <Icons.settings size={14} />
+              <span>Settings</span>
+            </Button>
+          </div>
+        )}
       </div>
       {/* Views and Stars */}
-      <div className="flex items-start space-x-3 py-1.5">
+      <div className="hidden items-start space-x-3 py-1.5 sm:flex">
         <div className="flex items-center space-x-0.5">
           <Icons.eye size={18} />
           <span className="text-foreground/75">{views}</span>
@@ -79,7 +101,7 @@ export const ListingCard = async ({
         </div>
       </div>
       {/* Listing Date and Location */}
-      <div className="flex flex-col py-1.5 text-sm">
+      <div className="hidden flex-col py-1.5 text-sm sm:flex">
         <p className="text-xs">
           {formatDistanceToNowStrict(new Date(createdAt))} ago
         </p>
@@ -87,7 +109,7 @@ export const ListingCard = async ({
       </div>
       {/* Follow and message btns */}
       {currentUser?.id === authorId ? (
-        <div className="flex flex-col space-y-2 py-1.5 text-sm">
+        <div className="hidden flex-col space-y-2 py-1.5 text-sm sm:flex">
           <Button className="space-x-1" variant="outline" size="sm">
             <Icons.pencil size={16} />
             <span>Edit</span>
@@ -102,7 +124,7 @@ export const ListingCard = async ({
           </DeleteListingButton>
         </div>
       ) : (
-        <div className="flex flex-col space-y-2 py-1.5 text-sm">
+        <div className="hidden flex-col space-y-2 py-1.5 text-sm sm:flex">
           <AddToFavoritesButton
             size="sm"
             variant="outline"

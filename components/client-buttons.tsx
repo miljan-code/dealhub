@@ -274,10 +274,15 @@ export const ShareButton = ({ slug }: ShareButtonProps) => {
   return (
     // TODO: change this hardcoded url
     <TwitterShareButton url={`https://dealhub.miljan.xyz${slug}`}>
-      <Button className="w-full space-x-2" size="sm" variant="outline">
+      <div
+        className={cn(
+          buttonVariants({ variant: 'outline' }),
+          'w-full space-x-2'
+        )}
+      >
         <Icons.share size={16} />
         <span>Share</span>
-      </Button>
+      </div>
     </TwitterShareButton>
   );
 };

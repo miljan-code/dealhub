@@ -5,12 +5,17 @@ import { useRouter } from 'next/navigation';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 
 interface SearchProps {
-  listingsCount: number;
+  listingsCount?: number;
+  rounded?: boolean;
 }
 
-export const Search: React.FC<SearchProps> = ({ listingsCount }) => {
+export const Search: React.FC<SearchProps> = ({
+  listingsCount,
+  rounded = true,
+}) => {
   const router = useRouter();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -26,16 +31,27 @@ export const Search: React.FC<SearchProps> = ({ listingsCount }) => {
   };
 
   return (
-    <form onSubmit={handleSearch} className="relative flex-1">
+    <form onSubmit={handleSearch} className="relative">
       <Input
         ref={inputRef}
         type="text"
-        placeholder={`Anything you want... (${listingsCount} listings)`}
+        placeholder={
+          !!listingsCount
+            ? `Anything you want... (${listingsCount} listings)`
+            : 'Anything you want...'
+        }
+        className={cn({
+          'rounded-md': rounded,
+          'rounded-none': !rounded,
+        })}
       />
       <Button
         type="submit"
         variant="secondary"
-        className="absolute bottom-0 right-0"
+        className={cn('absolute bottom-0 right-0', {
+          'rounded-md': rounded,
+          'rounded-none': !rounded,
+        })}
       >
         <Icons.search />
       </Button>

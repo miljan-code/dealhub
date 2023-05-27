@@ -5,6 +5,7 @@ export type SiteConfig = typeof siteConfig;
 export const siteConfig = {
   name: 'DealHub',
   description: 'Find anything you need',
+  url: 'https://dealhub.miljan.xyz',
   mainNav: [
     {
       title: 'My Listings',

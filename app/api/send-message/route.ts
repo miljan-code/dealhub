@@ -1,6 +1,6 @@
 import db from '@/lib/db';
 import { getCurrentUser } from '@/lib/session';
-import type { Chat, Message } from '@prisma/client';
+import { Chat, Message, Prisma } from '@prisma/client';
 
 interface Data {
   senderId: string;
@@ -10,20 +10,20 @@ interface Data {
 }
 
 export async function POST(req: Request) {
-  const currentUser = await getCurrentUser();
-
-  if (!currentUser) {
-    throw new Error('You need to be logged in first');
-  }
-
-  const { listingId, message, receiverId, senderId } =
-    (await req.json()) as Data;
-
-  if (receiverId === senderId) {
-    throw new Error('You can not send message to yourself');
-  }
-
   try {
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      throw new Response('Unauthorized', { status: 403 });
+    }
+
+    const { listingId, message, receiverId, senderId } =
+      (await req.json()) as Data;
+
+    if (receiverId === senderId) {
+      throw new Response('Unauthorized', { status: 403 });
+    }
+
     const chat = await db.chat.findFirst({
       where: {
         listingId,
@@ -66,6 +66,17 @@ export async function POST(req: Request) {
 
     return new Response(JSON.stringify(response), { status: 201 });
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2001') {
+        return new Response(
+          'You can not send message to the chat that does not exist',
+          {
+            status: 409,
+          }
+        );
+      }
+    }
+
     return new Response('Something went wrong!', { status: 500 });
   }
 }

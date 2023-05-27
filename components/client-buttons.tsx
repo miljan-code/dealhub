@@ -2,8 +2,10 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
 import { signOut } from 'next-auth/react';
+import { TwitterShareButton } from 'react-share';
+import { cn } from '@/lib/utils';
+import { siteConfig } from '@/config/site';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { buttonVariants } from '@/components/ui/button';
@@ -19,7 +21,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { TwitterShareButton } from 'react-share';
 import type { VariantProps } from 'class-variance-authority';
 
 interface SendMessageButtonProps
@@ -278,16 +279,17 @@ export const SignOutButton = ({
   );
 };
 
-interface ShareButtonProps {
+interface ShareButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
   slug: string;
 }
 
-export const ShareButton = ({ slug }: ShareButtonProps) => {
+export const ShareButton = ({ slug, className }: ShareButtonProps) => {
   return (
-    // TODO: change this hardcoded url
     <TwitterShareButton
-      url={`https://dealhub.miljan.xyz${slug}`}
-      className="hidden sm:block"
+      url={`${siteConfig.url}${slug}`}
+      className={cn('hidden sm:block', className)}
     >
       <div
         className={cn(

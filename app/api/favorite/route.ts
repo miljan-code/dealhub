@@ -7,15 +7,15 @@ interface Data {
 }
 
 export async function POST(req: Request) {
-  const currentUser = await getCurrentUser();
-
-  if (!currentUser) {
-    return new Error('You need to be logged in first!');
-  }
-
-  const data = (await req.json()) as Data;
-
   try {
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      return new Response('Unauthorized', { status: 403 });
+    }
+
+    const data = (await req.json()) as Data;
+
     const favorite = await db.favorite.create({
       data: {
         userId: currentUser.id,

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { rateUserSchema } from '@/lib/validations/rate-user';
 import { getCurrentUser } from '@/lib/session';
 import db from '@/lib/db';
+import { Prisma } from '@prisma/client';
 
 type RateUserData = z.infer<typeof rateUserSchema> & {
   chatId: number;
@@ -17,9 +18,7 @@ export async function POST(req: Request) {
     const currentUser = await getCurrentUser();
 
     if (!currentUser) {
-      return new Response('You must be logged in in order to rate an user', {
-        status: 401,
-      });
+      return new Response('Unauthorized', { status: 403 });
     }
 
     // 1. Check if authorId === currentUser
@@ -56,7 +55,7 @@ export async function POST(req: Request) {
     });
 
     if (!chat) {
-      return new Response('Chat not found');
+      return new Response('Chat not found', { status: 404 });
     }
 
     const userIds = [currentUser.id, data.ratedUserId];
@@ -66,7 +65,8 @@ export async function POST(req: Request) {
 
     if (!chatIsValid) {
       return new Response(
-        'You can not rate desired user because you do not have any conversation with each other'
+        'You can not rate desired user because you do not have any conversation with each other',
+        { status: 402 }
       );
     }
 
@@ -105,6 +105,21 @@ export async function POST(req: Request) {
 
     return new Response(JSON.stringify(rating), { status: 201 });
   } catch (error) {
-    // TODO: catch Zod and prisma errs
+    if (error instanceof z.ZodError) {
+      return new Response(JSON.stringify(error.issues), { status: 422 });
+    }
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        return new Response(
+          'You have already rated that user for desired listing',
+          {
+            status: 409,
+          }
+        );
+      }
+    }
+
+    return new Response('Something went wrong', { status: 500 });
   }
 }

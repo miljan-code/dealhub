@@ -2,12 +2,12 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
 import db from '@/lib/db';
+import { countRatings } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 import { Card } from '@/components/ui/card';
 import { Icons } from '@/components/icons';
 import { Rating } from '@/components/rating';
 import { ListingCard } from '@/components/listing-card';
-import { countRatings } from '@/lib/utils';
 
 const SHOW_LISTINGS = 3;
 
@@ -105,8 +105,6 @@ const UserPage = async ({ params }: Params) => {
           </div>
         </Card>
       )}
-
-      {/* TODO: add tabs?? */}
 
       {user.listings.map(item => (
         // @ts-expect-error

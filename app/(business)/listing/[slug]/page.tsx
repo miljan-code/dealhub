@@ -66,7 +66,7 @@ const ListingPage = async ({ params }: ListingPageProps) => {
     listing.user.ratings
   );
 
-  const ratings = currentUser?.ratings.slice(0, RATINGS_PER_LISTING);
+  const ratings = listing.user.ratings.slice(0, RATINGS_PER_LISTING);
 
   return (
     <section className="flex flex-col space-y-5">

@@ -19,9 +19,9 @@ export const Message: React.FC<MessageProps> = ({
   return (
     <div
       className={cn(
-        'flex w-fit max-w-xs gap-3 rounded-t-md bg-accent/50 px-4 py-2',
+        'flex w-fit max-w-xs gap-3 rounded-t-md bg-accent/80 px-4 py-2',
         {
-          'flex-row-reverse self-end rounded-bl-md bg-indigo-600/30':
+          'flex-row-reverse self-end rounded-bl-md bg-indigo-500/80':
             isCurrentUserSender,
           'self-start rounded-br-md': !isCurrentUserSender,
         }

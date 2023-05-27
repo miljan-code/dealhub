@@ -35,12 +35,12 @@ export const MessageCard = async ({
     <>
       <Link
         href={`/messages?userId=${senderId}&listingId=${chat.listingId}`}
-        className="grid grid-cols-3 rounded-md px-2 py-2 transition hover:bg-accent sm:grid-cols-4"
+        className="grid grid-cols-3 items-center rounded-md px-2 py-2 transition hover:bg-accent sm:grid-cols-6"
       >
         <span className="truncate">{sender?.name || ''}</span>
-        <span className="truncate">{chat.listing.title}</span>
-        <span className="truncate text-foreground/50">
-          {chat.messages.at(-1)?.message}
+        <span className="truncate sm:col-span-2">{chat.listing.title}</span>
+        <span className="truncate text-foreground/50 sm:col-span-2">
+          {chat.messages.at(0)?.message}
         </span>
         <span className="hidden truncate sm:inline">
           {format(

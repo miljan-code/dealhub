@@ -71,7 +71,8 @@ module.exports = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       backgroundImage: {
-        'chat-pattern': "url('/images/chat-pattern.svg')",
+        'chat-pattern-light': "url('/images/pattern-5.svg')",
+        'chat-pattern-dark': "url('/images/pattern-5-dark.svg')",
       },
     },
   },

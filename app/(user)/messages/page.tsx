@@ -33,6 +33,9 @@ const getChatsAndCurrentUser = async () => {
       },
       ratings: true,
     },
+    orderBy: {
+      id: 'desc',
+    },
   });
 
   return { currentUser, chats };
@@ -116,10 +119,10 @@ const MessagesPage = async ({ searchParams }: Params) => {
 
   return (
     <Card className="text-sm">
-      <div className="grid grid-cols-3 px-3 py-2 sm:grid-cols-4">
+      <div className="grid grid-cols-3 px-3 py-2 sm:grid-cols-6">
         <span>User</span>
-        <span>Listing</span>
-        <span>Message</span>
+        <span className="sm:col-span-2">Listing</span>
+        <span className="sm:col-span-2">Message</span>
         <span className="hidden sm:inline">Date</span>
       </div>
       <hr />

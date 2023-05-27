@@ -145,7 +145,7 @@ export const Chatbox = ({
       <hr />
       {/* Listing INFO */}
       <div className="flex flex-col space-y-2 px-4 py-2">
-        <div className="grid h-24 grid-cols-4 gap-6 sm:grid-cols-6">
+        <div className="grid grid-cols-4 gap-6 sm:grid-cols-6">
           <Link
             href={`/listing/${listing.slug}-${listing.id}`}
             className="col-span-1 flex cursor-pointer items-center justify-center"
@@ -173,11 +173,11 @@ export const Chatbox = ({
           <div className="py-1.5">
             <p className="font-medium text-red-500">{listing.price}€</p>
             {/* MOBILE VIEW START */}
-            <div className="flex items-center space-x-0.5">
+            <div className="flex items-center space-x-0.5 sm:hidden">
               <Icons.eye size={18} />
               <span className="text-foreground/75">{listing.views}</span>
             </div>
-            <div className="flex items-center space-x-0.5">
+            <div className="flex items-center space-x-0.5 sm:hidden">
               <Icons.star size={18} />
               <span className="text-foreground/75">
                 {listing.favorites.length}
@@ -210,7 +210,7 @@ export const Chatbox = ({
       <hr />
       {/* Chat window */}
       <div className="px-4 py-3">
-        <Card className="flex h-96 flex-col-reverse gap-2 overflow-y-scroll px-4 py-2">
+        <Card className="flex h-96 flex-col-reverse gap-2 overflow-y-scroll bg-opacity-25 bg-chat-pattern-light px-4 py-2 dark:bg-chat-pattern-dark">
           {activeChat?.messages.map(item => (
             <Message
               key={item.id}

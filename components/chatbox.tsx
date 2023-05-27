@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { FormEvent, useMemo, useRef, useState } from 'react';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { siteConfig } from '@/config/site';
@@ -11,6 +12,8 @@ import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Message } from '@/components/message';
+import { RatingDialog } from '@/components/rating-dialog';
+import { toast } from '@/components/ui/use-toast';
 import type {
   Chat,
   Favorite,
@@ -20,7 +23,6 @@ import type {
   Rating,
   User,
 } from '@prisma/client';
-import { RatingDialog } from './rating-dialog';
 
 export type ListingWithImageAndFavorites = Listing & {
   images: ListingImage[];
@@ -48,6 +50,8 @@ export const Chatbox = ({
   user,
   chats,
 }: ChatboxProps) => {
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -80,7 +84,6 @@ export const Chatbox = ({
 
     const chatParticipantIds = activeChat?.messages.map(item => item.senderId);
 
-    // TODO: do this check on server also!
     return userIds.every(id => chatParticipantIds.includes(id));
   }, [currentUser.id, user.id, activeChat]);
 
@@ -93,26 +96,31 @@ export const Chatbox = ({
 
     setIsLoading(true);
 
-    try {
-      await fetch('/api/send-message', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          senderId: currentUser.id,
-          receiverId: user.id,
-          listingId: listing.id,
-          message: message,
-        }),
-      });
+    const res = await fetch('/api/send-message', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        senderId: currentUser.id,
+        receiverId: user.id,
+        listingId: listing.id,
+        message: message,
+      }),
+    });
 
-      textareaRef.current.value = '';
-    } catch (error) {
-      // handle error
-    } finally {
-      setIsLoading(false);
+    setIsLoading(false);
+
+    if (!res?.ok) {
+      return toast({
+        title: 'Something went wrong',
+        description: 'Your message was not sent, please try again',
+        variant: 'destructive',
+      });
     }
+
+    textareaRef.current.value = '';
+    router.refresh();
   };
 
   return (
@@ -201,7 +209,6 @@ export const Chatbox = ({
       </div>
       <hr />
       {/* Chat window */}
-      {/* TODO: change pattern based on theme */}
       <div className="px-4 py-3">
         <Card className="flex h-96 flex-col-reverse gap-2 overflow-y-scroll px-4 py-2">
           {activeChat?.messages.map(item => (

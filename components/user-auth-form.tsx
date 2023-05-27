@@ -11,7 +11,7 @@ import { userRegisterSchema, userLoginSchema } from '@/lib/validations/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Icons } from './icons';
+import { Icons } from '@/components/icons';
 
 type RegisterSchema = z.infer<typeof userRegisterSchema>;
 type LoginSchema = z.infer<typeof userLoginSchema>;
@@ -39,7 +39,7 @@ export const UserAuthForm = ({ authType }: UserAuthFormProps) => {
     setIsLoading(true);
 
     if (authType === 'register') {
-      const response = await fetch('/api/register', {
+      const res = await fetch('/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,9 +47,9 @@ export const UserAuthForm = ({ authType }: UserAuthFormProps) => {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
+      if (!res.ok) {
         setIsLoading(false);
-        if (response.status === 409) {
+        if (res.status === 409) {
           return toast({
             title: 'Email address already in use',
             description: 'Please enter another address or try to login',

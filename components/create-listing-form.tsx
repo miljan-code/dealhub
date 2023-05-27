@@ -79,31 +79,32 @@ export const CreateListingForm: React.FC<CreateListingFormProps> = ({
   const onSubmit = async (formData: FormData) => {
     setIsLoading(true);
 
-    try {
-      await fetch('/api/listing', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+    const res = await fetch('/api/listing', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
 
-      toast({
-        title: 'Listing successfuly created!',
-        description: 'Redirecting to my listings page...',
-      });
+    setIsLoading(false);
 
-      router.push('/my-listings');
-      router.refresh();
-    } catch (error) {
+    if (!res?.ok) {
       toast({
         title: 'Something went wrong',
-        description: 'Please, try again.',
+        description: 'Listing is not created, please try again',
         variant: 'destructive',
       });
     }
 
-    setIsLoading(false);
+    if (res?.ok) {
+      toast({
+        title: 'Listing successfuly created!',
+        description: 'Redirecting to my listings page',
+      });
+      router.push('/my-listings');
+      router.refresh();
+    }
   };
 
   return (

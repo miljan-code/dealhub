@@ -32,6 +32,7 @@ import {
   SelectValue,
 } from './ui/select';
 import { setCustomValue } from '@/lib/utils';
+import { toast } from './ui/use-toast';
 
 interface RatingDialogProps {
   chat: ChatWithListingAndMessages;
@@ -65,32 +66,33 @@ export const RatingDialog: React.FC<RatingDialogProps> = ({
   const onSubmit = async (formData: FormData) => {
     setIsLoading(true);
 
-    try {
-      const res = await fetch('/api/rating', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          chatId: chat.id,
-          listingId: listing.id,
-          authorId: currentUser.id,
-          ratedUserId: user.id,
-        }),
-      });
+    const res = await fetch('/api/rating', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...formData,
+        chatId: chat.id,
+        listingId: listing.id,
+        authorId: currentUser.id,
+        ratedUserId: user.id,
+      }),
+    });
 
-      if (res.ok) {
-        router.push(`/user/${user.id}`);
-        router.refresh();
-      }
-      // if (!res.ok) {
-      //   throw new Error('Something went wrong!')
-      // }
-    } catch (error) {
-      // TODO: handle fetch fails
-    } finally {
-      setIsLoading(false);
+    setIsLoading(false);
+
+    if (!res?.ok) {
+      toast({
+        title: 'Something went wrong',
+        description: 'Your rating was not registered, please try again',
+        variant: 'destructive',
+      });
+    }
+
+    if (res?.ok) {
+      router.push(`/user/${user.id}`);
+      router.refresh();
     }
   };
 

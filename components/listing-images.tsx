@@ -62,8 +62,6 @@ export const ListingImages: React.FC<ListingImagesProps> = ({ images }) => {
     }
   };
 
-  // TODO: add left <=> right scroll with kybrd arrws when image is open
-
   return (
     <>
       <Card className="relative flex h-32 items-center justify-between overflow-hidden">

@@ -86,31 +86,37 @@ export const AddToFavoritesButton: React.FC<AddToFavoritesButtonProps> = ({
   const handleFavorites = async () => {
     setIsLoading(true);
 
-    try {
-      if (isFavorited) {
-        await fetch(`/api/favorite/${listingId}`, {
-          method: 'DELETE',
-        });
-      } else {
-        await fetch('/api/favorite', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            listingId,
-          }),
-        });
-      }
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Something went wrong!',
+    let res: Response;
+
+    if (isFavorited) {
+      res = await fetch(`/api/favorite/${listingId}`, {
+        method: 'DELETE',
+      });
+    } else {
+      res = await fetch('/api/favorite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          listingId,
+        }),
       });
     }
 
-    router.refresh();
     setIsLoading(false);
+
+    if (!res?.ok) {
+      toast({
+        title: 'Something went wrong',
+        description: 'Operation was unsuccessful, please try again',
+        variant: 'destructive',
+      });
+    }
+
+    if (res?.ok) {
+      router.refresh();
+    }
   };
 
   return (
@@ -158,20 +164,24 @@ export const DeleteListingButton: React.FC<DeleteListingButtonProps> = ({
   const handleDeleteListing = async () => {
     setIsLoading(true);
 
-    try {
-      await fetch(`/api/listing/${listingId}`, {
-        method: 'DELETE',
-      });
-    } catch (error) {
+    const res = await fetch(`/api/listing/${listingId}`, {
+      method: 'DELETE',
+    });
+
+    setIsLoading(false);
+
+    if (!res?.ok) {
       toast({
-        title: 'Error',
-        description: 'Something went wrong!',
+        title: 'Something went wrong',
+        description: 'Listing is not deleted, please try again',
+        variant: 'destructive',
       });
     }
 
-    onDropdownClose?.();
-    router.refresh();
-    setIsLoading(false);
+    if (res?.ok) {
+      onDropdownClose?.();
+      router.refresh();
+    }
   };
 
   return (
@@ -229,17 +239,21 @@ export const MarkAsReadButton: React.FC<MarkAsReadButtonProps> = ({
   const handleMarkAsRead = async () => {
     setIsLoading(true);
 
-    try {
-      await fetch(`/api/notification/${notificationId}`, {
-        method: 'DELETE',
-      });
+    const res = await fetch(`/api/notification/${notificationId}`, {
+      method: 'DELETE',
+    });
 
-      router.refresh();
-    } catch (error) {
-      // TODO: handle errors
-    } finally {
-      setIsLoading(false);
+    setIsLoading(false);
+
+    if (!res?.ok) {
+      toast({
+        title: 'Something went wrong',
+        description: 'Notification was not marked as read, please try again',
+        variant: 'destructive',
+      });
     }
+
+    router.refresh();
   };
 
   return (
@@ -285,11 +299,16 @@ interface ShareButtonProps
   slug: string;
 }
 
-export const ShareButton = ({ slug, className }: ShareButtonProps) => {
+export const ShareButton = ({
+  slug,
+  className,
+  ...props
+}: ShareButtonProps) => {
   return (
     <TwitterShareButton
       url={`${siteConfig.url}${slug}`}
       className={cn('hidden sm:block', className)}
+      {...props}
     >
       <div
         className={cn(

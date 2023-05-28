@@ -17,8 +17,11 @@ import {
   ShareButton,
 } from '@/components/client-buttons';
 import { ReportView } from '@/components/report-view';
+import { Metadata } from 'next';
 
-const RATINGS_PER_LISTING = 3;
+const getIdFromParams = (params: { slug: string }) => {
+  return params.slug.split('-').at(-1);
+};
 
 const getListingById = async (id: string | undefined) => {
   if (!id) return null;
@@ -47,12 +50,55 @@ const getListingById = async (id: string | undefined) => {
   return listing;
 };
 
+const getListings = async () => {
+  return await db.listing.findMany({
+    take: 100,
+  });
+};
+
 interface ListingPageProps {
   params: { slug: string };
 }
 
+export async function generateMetadata({
+  params,
+}: ListingPageProps): Promise<Metadata> {
+  const listingId = getIdFromParams(params);
+  const listing = await getListingById(listingId);
+
+  if (!listing) {
+    return {};
+  }
+
+  return {
+    title: listing.title,
+    description: listing.description,
+    openGraph: {
+      title: listing.title,
+      description: listing.description || '',
+      type: 'article',
+      url: `${siteConfig.url}/listing/${params.slug}`,
+      images: listing.images.map(img => img.imageUrl),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: listing.title,
+      description: listing.description || '',
+      images: listing.images.map(img => img.imageUrl),
+    },
+  };
+}
+
+export async function generateStaticParams() {
+  const listings = await getListings();
+
+  return listings.map(listing => ({
+    slug: `${listing.slug}-${listing.id}`,
+  }));
+}
+
 const ListingPage = async ({ params }: ListingPageProps) => {
-  const listingId = params.slug.split('-').at(-1);
+  const listingId = getIdFromParams(params);
   const listing = await getListingById(listingId);
 
   if (!listing) return notFound();
@@ -66,7 +112,7 @@ const ListingPage = async ({ params }: ListingPageProps) => {
     listing.user.ratings
   );
 
-  const ratings = listing.user.ratings.slice(0, RATINGS_PER_LISTING);
+  const ratings = listing.user.ratings.slice(0, siteConfig.ratingsPerListing);
 
   return (
     <section className="flex flex-col space-y-5">

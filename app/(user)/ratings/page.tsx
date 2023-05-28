@@ -6,6 +6,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Rating } from '@/components/rating';
 import { Card } from '@/components/ui/card';
 
+export const metadata = {
+  title: 'Ratings',
+};
+
 const RatingsPage = async () => {
   const currentUser = await getCurrentUser();
 

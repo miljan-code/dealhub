@@ -8,6 +8,10 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { Icons } from '@/components/icons';
 import { buttonVariants } from '@/components/ui/button';
 
+export const metadata = {
+  title: 'My listings',
+};
+
 const MyListingsPage = async () => {
   const currentUser = await getCurrentUser();
 

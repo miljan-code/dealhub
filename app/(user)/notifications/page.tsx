@@ -6,6 +6,10 @@ import { Icons } from '@/components/icons';
 import { format } from 'date-fns';
 import { MarkAsReadButton } from '@/components/client-buttons';
 
+export const metadata = {
+  title: 'Notifications',
+};
+
 const NotificationsPage = async () => {
   const currentUser = await getCurrentUser();
 

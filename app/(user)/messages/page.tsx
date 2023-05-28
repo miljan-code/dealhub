@@ -68,6 +68,10 @@ interface Params {
   };
 }
 
+export const metadata = {
+  title: 'Messages',
+};
+
 const MessagesPage = async ({ searchParams }: Params) => {
   const chatsAndUser = await getChatsAndCurrentUser();
 

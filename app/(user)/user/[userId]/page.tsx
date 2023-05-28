@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/card';
 import { Icons } from '@/components/icons';
 import { Rating } from '@/components/rating';
 import { ListingCard } from '@/components/listing-card';
+import { Metadata } from 'next';
 
 const SHOW_LISTINGS = 3;
 
@@ -43,6 +44,18 @@ const getUserById = async (id: string) => {
 interface Params {
   params: { userId: string };
 }
+
+// export async function generateMetadata({ params }: Params): Promise<Metadata> {
+//   const user = await getUserById(params.userId);
+
+//   if (!user) {
+//     return {};
+//   }
+
+//   return {
+//     title: user.name,
+//   };
+// }
 
 const UserPage = async ({ params }: Params) => {
   const { userId } = params;
@@ -108,7 +121,7 @@ const UserPage = async ({ params }: Params) => {
 
       {user.listings.map(item => (
         // @ts-expect-error
-        <ListingCard key={item} {...item} />
+        <ListingCard key={item.id} {...item} />
       ))}
       {user.listings.length === SHOW_LISTINGS && (
         <span className="mt-2 flex cursor-pointer items-center justify-center gap-0.5 text-xs">

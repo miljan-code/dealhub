@@ -7,6 +7,7 @@ import { Prisma } from '@prisma/client';
 interface QueryOptions {
   category?: string;
   term?: string;
+  page?: string;
 }
 
 const getListings = async (options: QueryOptions) => {
@@ -22,6 +23,12 @@ const getListings = async (options: QueryOptions) => {
     };
   }
 
+  const listingsPerPage = 6;
+  let skipListings: number = 0;
+  if (options.page) {
+    skipListings = listingsPerPage * (+options.page - 1);
+  }
+
   const listings = await db.listing.findMany({
     include: {
       images: true,
@@ -31,6 +38,8 @@ const getListings = async (options: QueryOptions) => {
       createdAt: 'desc',
     },
     where: query,
+    skip: skipListings,
+    take: listingsPerPage,
   });
 
   if (!listings) return null;
@@ -42,13 +51,12 @@ interface Params {
   searchParams: {
     category: string;
     term: string;
+    page: string;
   };
 }
 
 const IndexPage = async ({ searchParams }: Params) => {
-  const { category, term } = searchParams;
-
-  const listings = await getListings({ category, term });
+  const listings = await getListings(searchParams);
 
   if (!listings || !listings.length) {
     return (

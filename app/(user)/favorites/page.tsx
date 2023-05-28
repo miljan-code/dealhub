@@ -3,6 +3,10 @@ import { Icons } from '@/components/icons';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ListingCard } from '@/components/listing-card';
 
+export const metadata = {
+  title: 'Favorite listings',
+};
+
 const FavoritesPage = async () => {
   const currentUser = await getCurrentUser();
 

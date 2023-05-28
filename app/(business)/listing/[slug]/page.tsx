@@ -89,14 +89,6 @@ export async function generateMetadata({
   };
 }
 
-export async function generateStaticParams() {
-  const listings = await getListings();
-
-  return listings.map(listing => ({
-    slug: `${listing.slug}-${listing.id}`,
-  }));
-}
-
 const ListingPage = async ({ params }: ListingPageProps) => {
   const listingId = getIdFromParams(params);
   const listing = await getListingById(listingId);

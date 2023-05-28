@@ -45,17 +45,17 @@ interface Params {
   params: { userId: string };
 }
 
-// export async function generateMetadata({ params }: Params): Promise<Metadata> {
-//   const user = await getUserById(params.userId);
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const user = await getUserById(params.userId);
 
-//   if (!user) {
-//     return {};
-//   }
+  if (!user) {
+    return {};
+  }
 
-//   return {
-//     title: user.name,
-//   };
-// }
+  return {
+    title: user.name,
+  };
+}
 
 const UserPage = async ({ params }: Params) => {
   const { userId } = params;
